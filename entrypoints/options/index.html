@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title data-i18n="optTitle">Opciones · Lector Fluido</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- Los textos del catálogo se aplican al cargar (localizeDocument). El
+         español que hay aquí es solo lo que se ve el instante previo. -->
+    <div class="page">
+      <header>
+        <h1 data-i18n="extensionName">Lector Fluido</h1>
+        <p class="sub" data-i18n="optSubtitle">Resúmenes con IA sobre los párrafos largos de cualquier web.</p>
+      </header>
+
+      <div id="welcome" class="card welcome" hidden>
+        <h2 data-i18n="optWelcomeTitle">Bienvenido</h2>
+        <ol>
+          <li data-i18n-rich="optWelcomeStep1"></li>
+          <li data-i18n-rich="optWelcomeStep2"></li>
+          <li data-i18n-rich="optWelcomeStep3"></li>
+        </ol>
+      </div>
+
+      <section class="card">
+        <h2 data-i18n="optSectionDetection">Detección de texto</h2>
+        <div class="field">
+          <label for="minWords" data-i18n="optMinWordsLabel">Umbral mínimo de palabras por bloque</label>
+          <input type="number" id="minWords" min="20" max="1000" step="10" />
+          <p class="hint" data-i18n="optMinWordsHint"></p>
+        </div>
+        <div class="field">
+          <label for="extractionMode" data-i18n="optExtractionMode">Modo de extracción</label>
+          <select id="extractionMode">
+            <option value="auto" data-i18n="optModeAuto"></option>
+            <option value="inplace" data-i18n="optModeInplace"></option>
+            <option value="reader" data-i18n="optModeReader"></option>
+          </select>
+        </div>
+        <div class="field" id="reader-origins-field">
+          <label data-i18n="optReaderOriginsLabel">Sitios fijados a vista de lectura</label>
+          <div id="reader-origins" class="chips"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="optSectionSummaries">Resúmenes</h2>
+        <div class="field">
+          <label for="summaryRatio"><span data-i18n="optRatioLabel">Longitud objetivo:</span> <span id="ratio-label"></span></label>
+          <input type="range" id="summaryRatio" min="5" max="50" step="1" />
+          <p class="hint" data-i18n="optRatioHint"></p>
+        </div>
+        <div class="field">
+          <label for="summaryFormat" data-i18n="optFormat">Formato</label>
+          <select id="summaryFormat">
+            <option value="proportional" data-i18n="optFormatProportional"></option>
+            <option value="sentences" data-i18n="optFormatSentences"></option>
+            <option value="bullets" data-i18n="optFormatBullets"></option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="language" data-i18n="optLanguage">Idioma del resumen</label>
+          <select id="language">
+            <option value="auto" data-i18n="optLangAuto"></option>
+            <!-- Los nombres de idioma van en su propio idioma, a propósito. -->
+            <option value="es">Español</option>
+            <option value="en">English</option>
+            <option value="pt">Português</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="ca">Català</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="optSectionProvider">Proveedor de IA</h2>
+        <div class="field">
+          <label for="provider" data-i18n="optPrimaryProvider">Proveedor principal</label>
+          <select id="provider"></select>
+          <p class="hint" id="provider-hint"></p>
+        </div>
+        <div class="field">
+          <label for="fallbackProvider" data-i18n="optFallbackProvider">Proveedor de respaldo</label>
+          <select id="fallbackProvider"></select>
+          <p class="hint" data-i18n="optFallbackHint"></p>
+        </div>
+        <div id="providers"></div>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="optSectionPrivacy">Privacidad</h2>
+        <label class="check">
+          <input type="checkbox" id="cloudConsent" />
+          <span data-i18n-rich="optCloudConsent"></span>
+        </label>
+        <label class="check">
+          <input type="checkbox" id="geminiConsent" />
+          <span data-i18n-rich="optGeminiConsent"></span>
+        </label>
+      </section>
+
+      <section class="card advanced">
+        <h2 data-i18n="optSectionAdvanced">Avanzado</h2>
+        <div class="field">
+          <label for="callStrategy" data-i18n="optCallStrategy">Estrategia de llamadas</label>
+          <select id="callStrategy">
+            <option value="auto" data-i18n="optStrategyAuto"></option>
+            <option value="batch" data-i18n="optStrategyBatch"></option>
+            <option value="per-block" data-i18n="optStrategyPerBlock"></option>
+          </select>
+          <p class="hint" data-i18n="optStrategyHint"></p>
+        </div>
+        <div class="field">
+          <label for="batchSize" data-i18n="optBatchSize">Bloques por llamada</label>
+          <input type="number" id="batchSize" min="1" max="100" data-i18n-placeholder="optBatchSizePlaceholder" />
+          <p class="hint" data-i18n="optBatchSizeHint"></p>
+        </div>
+        <div class="field">
+          <label for="cacheTtlDays" data-i18n="optCacheTtl">Caché: días de vigencia</label>
+          <input type="number" id="cacheTtlDays" min="1" max="365" />
+        </div>
+        <div class="field">
+          <label for="maxCacheMb" data-i18n="optCacheMax">Caché: tamaño máximo (MB)</label>
+          <input type="number" id="maxCacheMb" min="5" max="500" />
+        </div>
+        <div class="row">
+          <span id="cache-stats" class="hint"></span>
+          <button type="button" id="clear-cache" class="ghost" data-i18n="optClearCache">Vaciar caché</button>
+        </div>
+        <label class="check">
+          <input type="checkbox" id="debugLogging" />
+          <span data-i18n-rich="optDebugLogging"></span>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="optSectionSites">Sitios habilitados</h2>
+        <div id="origins" class="chips"></div>
+        <p class="hint" data-i18n="optSitesHint"></p>
+      </section>
+
+      <footer>
+        <span id="status" class="status" role="status"></span>
+      </footer>
+    </div>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,572 @@
+{
+  "extensionName": {
+    "message": "Lector Fluido"
+  },
+  "extensionDescription": {
+    "message": "Superpose des résumés générés par IA sur les longs paragraphes de n’importe quel site, l’original à un clic."
+  },
+  "fabSummarize": {
+    "message": "Résumer"
+  },
+  "fabTitle": {
+    "message": "Résumer cette page"
+  },
+  "fabAriaLabel": {
+    "message": "Résumer cette page avec Lector Fluido"
+  },
+  "fabMoreOptions": {
+    "message": "Plus d’options"
+  },
+  "fabBusy": {
+    "message": "Résumé en cours…"
+  },
+  "fabBusyTitle": {
+    "message": "Résumé $1 sur $2"
+  },
+  "fabSummaryCount": {
+    "message": "$1 résumés"
+  },
+  "fabShowSummaries": {
+    "message": "Voir les résumés"
+  },
+  "menuHideAll": {
+    "message": "Masquer tous les résumés"
+  },
+  "menuShowAll": {
+    "message": "Afficher tous les résumés"
+  },
+  "menuRegenerate": {
+    "message": "Régénérer cette page"
+  },
+  "menuTldr": {
+    "message": "Voir le résumé global (TL;DR)"
+  },
+  "menuReader": {
+    "message": "Ouvrir en mode lecture"
+  },
+  "menuOptions": {
+    "message": "Options de Lector Fluido"
+  },
+  "menuDisableSite": {
+    "message": "Désactiver sur ce site"
+  },
+  "overlayRegion": {
+    "message": "Résumé du paragraphe"
+  },
+  "overlayTagSummary": {
+    "message": "résumé"
+  },
+  "overlayTagError": {
+    "message": "erreur"
+  },
+  "overlayTagFallback": {
+    "message": "résumé · $1"
+  },
+  "overlayFallbackLabel": {
+    "message": "secours"
+  },
+  "overlayRetry": {
+    "message": "Réessayer ce bloc"
+  },
+  "overlayShowOriginal": {
+    "message": "Voir le texte original"
+  },
+  "overlayBackToSummary": {
+    "message": "Revenir au résumé"
+  },
+  "toastClose": {
+    "message": "Fermer"
+  },
+  "readerTitle": {
+    "message": "Lector Fluido — mode lecture"
+  },
+  "readerClose": {
+    "message": "Fermer ✕"
+  },
+  "errNoArticle": {
+    "message": "Aucun contenu d’article détecté sur cette page."
+  },
+  "degradeLowScore": {
+    "message": "l’article n’a pas pu être identifié avec certitude"
+  },
+  "degradeTooFewBlocks": {
+    "message": "la structure de la page a dérouté l’extracteur"
+  },
+  "degradeAnchorUnsafe": {
+    "message": "les résumés ne peuvent pas être ancrés de façon fiable"
+  },
+  "degradeDefault": {
+    "message": "la page est difficile à annoter"
+  },
+  "degradePrompt": {
+    "message": "Cette page est difficile à annoter ($1). L’ouvrir en mode lecture ?"
+  },
+  "degradeOpenReader": {
+    "message": "Ouvrir le mode lecture"
+  },
+  "degradeTryAnyway": {
+    "message": "Essayer quand même"
+  },
+  "degradeAlwaysHere": {
+    "message": "Toujours l’utiliser ici"
+  },
+  "noneCompressed": {
+    "message": "Aucun bloc n’a pu être résumé avec une compression suffisante."
+  },
+  "blockNoSummary": {
+    "message": "Le fournisseur n’a renvoyé aucun résumé pour ce bloc."
+  },
+  "actionOpenOptions": {
+    "message": "Ouvrir les options"
+  },
+  "errNoProvider": {
+    "message": "Aucun fournisseur d’IA n’est configuré, ou le consentement de confidentialité manque."
+  },
+  "errUnauthorized": {
+    "message": "L’identifiant a été refusé. Vérifiez-le dans les options."
+  },
+  "errQuota": {
+    "message": "Le crédit ou le quota quotidien du fournisseur est épuisé. Le quota gratuit de Gemini se réinitialise à 00:00 UTC."
+  },
+  "errRateLimit": {
+    "message": "Le fournisseur limite les requêtes. Réessayez dans une minute."
+  },
+  "errUnavailable": {
+    "message": "Le fournisseur n’est pas disponible sur cet appareil."
+  },
+  "errEmptyResponse": {
+    "message": "Le modèle a renvoyé une réponse vide. Réessayez."
+  },
+  "errGeneric": {
+    "message": "Impossible de résumer : $1"
+  },
+  "noBlocksLowerThreshold": {
+    "message": "Abaisser le seuil à $1 mots"
+  },
+  "noBlocksMessage": {
+    "message": "Aucun bloc de plus de $1 mots sur cette page."
+  },
+  "popupCurrentSite": {
+    "message": "Site actuel"
+  },
+  "popupProvider": {
+    "message": "Fournisseur d’IA"
+  },
+  "popupRun": {
+    "message": "Résumer cette page"
+  },
+  "popupOptions": {
+    "message": "Options"
+  },
+  "popupDiagnose": {
+    "message": "Diagnostic"
+  },
+  "popupChecking": {
+    "message": "Vérification…"
+  },
+  "popupNotAvailableHere": {
+    "message": "Indisponible ici"
+  },
+  "popupOnlyHttp": {
+    "message": "Ne fonctionne que sur les pages http et https."
+  },
+  "popupSiteActive": {
+    "message": "Le bouton flottant est actif sur ce site."
+  },
+  "popupSiteInactive": {
+    "message": "Activez-le pour injecter le bouton flottant ici."
+  },
+  "popupPermissionDenied": {
+    "message": "Impossible d’activer sans autorisation pour ce site."
+  },
+  "popupInjected": {
+    "message": "C’est prêt. Le bouton flottant est sur la page."
+  },
+  "popupReloadNeeded": {
+    "message": "Activé. Rechargez la page pour voir le bouton flottant."
+  },
+  "popupDisabled": {
+    "message": "Désactivé sur ce site."
+  },
+  "popupLoadFailed": {
+    "message": "Chargement impossible sur cette page. Rechargez-la et réessayez."
+  },
+  "popupProviderUnknown": {
+    "message": "Fournisseur inconnu."
+  },
+  "popupProviderUnavailable": {
+    "message": "Indisponible sur cet appareil."
+  },
+  "popupMissingCredential": {
+    "message": "Identifiant manquant : configurez-le dans les options."
+  },
+  "popupMissingConsent": {
+    "message": "Le consentement de confidentialité doit être accepté dans les options."
+  },
+  "popupReady": {
+    "message": "Prêt à résumer."
+  },
+  "popupDiagnosisOk": {
+    "message": "✓ Tout est correct. Si le bouton n’apparaît toujours pas, consultez la console de la page."
+  },
+  "popupDiagnosisProblems": {
+    "message": "⚠ $1"
+  },
+  "diagUrlUnreadable": {
+    "message": "Impossible de lire l’URL de l’onglet."
+  },
+  "diagNotHttp": {
+    "message": "La page n’est pas en http/https (injection impossible)."
+  },
+  "diagNoHostPermission": {
+    "message": "L’autorisation d’hôte pour ce site manque."
+  },
+  "diagNotEnabled": {
+    "message": "Le site n’est pas dans la liste des sites activés."
+  },
+  "diagContentScriptDead": {
+    "message": "Le script de contenu ne répond pas : rechargez la page."
+  },
+  "diagProviderUnavailable": {
+    "message": "Fournisseur indisponible : $1"
+  },
+  "diagNoReason": {
+    "message": "sans motif"
+  },
+  "diagMissingCredential": {
+    "message": "L’identifiant du fournisseur manque."
+  },
+  "diagMissingConsent": {
+    "message": "Le consentement de confidentialité doit être accepté dans les options."
+  },
+  "diagNoArticle": {
+    "message": "L’extracteur ne trouve pas d’article sur cette page."
+  },
+  "diagBelowThreshold": {
+    "message": "Aucun bloc n’atteint le seuil : le plus grand fait $1 mots et le seuil est $2."
+  },
+  "errCancelled": {
+    "message": "Opération annulée."
+  },
+  "testUnavailable": {
+    "message": "Indisponible."
+  },
+  "testMissingCredential": {
+    "message": "Identifiant manquant."
+  },
+  "testSampleTitle": {
+    "message": "Test de connexion"
+  },
+  "testSampleText": {
+    "message": "Le brouillard couvrait la vallée à l’aube. Les voisins sortirent regarder, convaincus que la rivière avait encore débordé, et découvrirent que l’eau effleurait à peine les premières marches du vieux pont."
+  },
+  "providerBrowserBuiltin": {
+    "message": "IA du navigateur (locale)"
+  },
+  "reasonNanoUnsupported": {
+    "message": "Cet appareil ne remplit pas les conditions de Gemini Nano."
+  },
+  "reasonNanoDownload": {
+    "message": "Le modèle sera téléchargé à la première utilisation (plusieurs Go)."
+  },
+  "reasonFirefoxDistilbart": {
+    "message": "Firefox utilise un petit modèle local (distilbart, entraîné en anglais) : la qualité est moindre et les résumés peuvent sortir en anglais."
+  },
+  "reasonNoLocalAi": {
+    "message": "Ce navigateur n’expose pas d’IA locale. Firefox requiert l’autorisation trialML ; Chrome, la Summarizer API."
+  },
+  "errFirefoxEngine": {
+    "message": "Impossible de démarrer le moteur local de Firefox : $1"
+  },
+  "errLocalUnavailable": {
+    "message": "IA locale indisponible."
+  },
+  "errLocalEmpty": {
+    "message": "Le moteur local a renvoyé un résumé vide."
+  },
+  "errMissingKey": {
+    "message": "La clé $1 manque."
+  },
+  "errEmptyModelResponse": {
+    "message": "Réponse vide du modèle."
+  },
+  "errEmptyModelResponseReason": {
+    "message": "Réponse vide du modèle ($1)."
+  },
+  "reasonNoContent": {
+    "message": "sans contenu"
+  },
+  "errToolMissing": {
+    "message": "Le modèle n’a pas renvoyé l’outil attendu."
+  },
+  "errNetwork": {
+    "message": "Impossible de joindre $1 : $2"
+  },
+  "errUnauthorizedStatus": {
+    "message": "Identifiant refusé ($1). $2"
+  },
+  "errQuotaStatus": {
+    "message": "Crédit épuisé ($1). $2"
+  },
+  "errRateLimitDetail": {
+    "message": "Limite de requêtes atteinte. $1"
+  },
+  "errProviderFailed": {
+    "message": "Le fournisseur a échoué ($1). $2"
+  },
+  "errStatus": {
+    "message": "Erreur $1 : $2"
+  },
+  "errInvalidJson": {
+    "message": "Le fournisseur n’a pas renvoyé de JSON valide."
+  },
+  "errUnexpectedShape": {
+    "message": "Réponse de forme inattendue."
+  },
+  "errNoSummaries": {
+    "message": "Le fournisseur n’a renvoyé aucun résumé."
+  },
+  "errNoProviderConfigured": {
+    "message": "Aucun fournisseur d’IA n’est configuré."
+  },
+  "errNoBatchMode": {
+    "message": "Fournisseur sans mode batch."
+  },
+  "errNoPerBlockMode": {
+    "message": "Fournisseur sans mode par bloc."
+  },
+  "oauthClosed": {
+    "message": "Le flux d’autorisation s’est fermé sans aboutir."
+  },
+  "oauthNoCode": {
+    "message": "OpenRouter n’a pas renvoyé le code d’autorisation."
+  },
+  "oauthExchangeRejected": {
+    "message": "OpenRouter a refusé l’échange ($1) : $2"
+  },
+  "oauthNoKey": {
+    "message": "OpenRouter n’a renvoyé aucune clé."
+  },
+  "optTitle": {
+    "message": "Options · Lector Fluido"
+  },
+  "optSubtitle": {
+    "message": "Résumés par IA sur les longs paragraphes de n’importe quel site."
+  },
+  "optWelcomeTitle": {
+    "message": "Bienvenue"
+  },
+  "optWelcomeStep1": {
+    "message": "Choisissez un fournisseur d’IA ci-dessous. L’**IA locale** ne demande ni compte ni connexion."
+  },
+  "optWelcomeStep2": {
+    "message": "Ouvrez un article et activez l’extension pour ce site depuis l’icône de la barre d’outils."
+  },
+  "optWelcomeStep3": {
+    "message": "Cliquez sur l’onglet flottant **Résumer** au bord droit."
+  },
+  "optSectionDetection": {
+    "message": "Détection du texte"
+  },
+  "optMinWordsLabel": {
+    "message": "Nombre minimal de mots par bloc"
+  },
+  "optMinWordsHint": {
+    "message": "Les paragraphes en dessous sont regroupés avec leurs voisins jusqu’à l’atteindre. Par défaut : 100."
+  },
+  "optExtractionMode": {
+    "message": "Mode d’extraction"
+  },
+  "optModeAuto": {
+    "message": "Automatique (sur place, mode lecture en cas d’échec)"
+  },
+  "optModeInplace": {
+    "message": "Toujours sur place"
+  },
+  "optModeReader": {
+    "message": "Toujours en mode lecture"
+  },
+  "optReaderOriginsLabel": {
+    "message": "Sites fixés en mode lecture"
+  },
+  "optSectionSummaries": {
+    "message": "Résumés"
+  },
+  "optRatioLabel": {
+    "message": "Longueur cible :"
+  },
+  "optRatioValue": {
+    "message": "$1 % de l’original"
+  },
+  "optRatioHint": {
+    "message": "Proportion par rapport à l’original, avec un minimum de 15 et un maximum de 100 mots. Si le résumé dépasse 60 % du texte original, ce bloc ne reçoit pas de résumé."
+  },
+  "optFormat": {
+    "message": "Format"
+  },
+  "optFormatProportional": {
+    "message": "Paragraphe proportionnel"
+  },
+  "optFormatSentences": {
+    "message": "1 ou 2 phrases"
+  },
+  "optFormatBullets": {
+    "message": "Puces"
+  },
+  "optLanguage": {
+    "message": "Langue du résumé"
+  },
+  "optLangAuto": {
+    "message": "Automatique (espagnol s’il fait partie des langues préférées)"
+  },
+  "optSectionProvider": {
+    "message": "Fournisseur d’IA"
+  },
+  "optPrimaryProvider": {
+    "message": "Fournisseur principal"
+  },
+  "optFallbackProvider": {
+    "message": "Fournisseur de secours"
+  },
+  "optFallbackHint": {
+    "message": "Utilisé si le principal échoue après les nouvelles tentatives."
+  },
+  "optSectionPrivacy": {
+    "message": "Confidentialité"
+  },
+  "optCloudConsent": {
+    "message": "J’accepte que le **texte des pages que je lis soit envoyé** au fournisseur d’IA en ligne que je configure. Sans cela, seule l’IA locale du navigateur fonctionne."
+  },
+  "optGeminiConsent": {
+    "message": "Je comprends que dans l’**offre gratuite de Google Gemini**, Google **utilise le contenu envoyé pour entraîner et améliorer ses produits**. Comme ce contenu est ce que je lis, j’accepte explicitement cette condition."
+  },
+  "optSectionAdvanced": {
+    "message": "Avancé"
+  },
+  "optCallStrategy": {
+    "message": "Stratégie d’appels"
+  },
+  "optStrategyAuto": {
+    "message": "Automatique (décidée par le fournisseur)"
+  },
+  "optStrategyBatch": {
+    "message": "Un appel par article"
+  },
+  "optStrategyPerBlock": {
+    "message": "Un appel par bloc"
+  },
+  "optStrategyHint": {
+    "message": "L’IA locale utilise toujours un appel par bloc : sa fenêtre de contexte ne peut pas contenir l’article entier."
+  },
+  "optBatchSize": {
+    "message": "Blocs par appel"
+  },
+  "optBatchSizePlaceholder": {
+    "message": "Sans limite"
+  },
+  "optBatchSizeHint": {
+    "message": "Vide = tous en un seul appel (par défaut avec l’offre gratuite Gemini). Une valeur comme 8 rétablit l’affichage progressif au prix de plus de requêtes."
+  },
+  "optCacheTtl": {
+    "message": "Cache : jours de validité"
+  },
+  "optCacheMax": {
+    "message": "Cache : taille maximale (Mo)"
+  },
+  "optClearCache": {
+    "message": "Vider le cache"
+  },
+  "optDebugLogging": {
+    "message": "**Journal détaillé dans la console** — trace l’extraction, les fournisseurs et les appels HTTP. Les avertissements et erreurs sont toujours journalisés. Console de la page pour le script de contenu ; `about:debugging` (Firefox) ou `chrome://extensions` (Chrome) pour l’arrière-plan."
+  },
+  "optSectionSites": {
+    "message": "Sites activés"
+  },
+  "optSitesHint": {
+    "message": "Les sites s’activent depuis l’icône de la barre d’outils. Les retirer ici révoque aussi l’autorisation d’hôte correspondante."
+  },
+  "optSaved": {
+    "message": "Enregistré."
+  },
+  "optUnavailableSuffix": {
+    "message": " (indisponible)"
+  },
+  "optNone": {
+    "message": "Aucun"
+  },
+  "optNoneShort": {
+    "message": "Aucun."
+  },
+  "optBadgeUnavailable": {
+    "message": "indisponible"
+  },
+  "optBadgeConfigured": {
+    "message": "configuré"
+  },
+  "optBadgeNoCredential": {
+    "message": "sans identifiant"
+  },
+  "optKeySavedPlaceholder": {
+    "message": "•••••••• (enregistrée)"
+  },
+  "optKeyPlaceholder": {
+    "message": "Collez votre clé ici"
+  },
+  "optSave": {
+    "message": "Enregistrer"
+  },
+  "optCredentialSaved": {
+    "message": "Identifiant $1 enregistré."
+  },
+  "optTest": {
+    "message": "Tester"
+  },
+  "optTesting": {
+    "message": "Test en cours…"
+  },
+  "optTestOk": {
+    "message": "OK · « $1… »"
+  },
+  "optTestFailed": {
+    "message": "Échec : $1"
+  },
+  "optConnectOpenrouter": {
+    "message": "Se connecter à OpenRouter (sans copier de clé)"
+  },
+  "optConnected": {
+    "message": "Connecté à OpenRouter."
+  },
+  "optConnectFailed": {
+    "message": "Connexion impossible."
+  },
+  "optNoSites": {
+    "message": "Aucun site activé pour l’instant."
+  },
+  "optRemoveRevoke": {
+    "message": "Retirer et révoquer l’autorisation"
+  },
+  "optCacheStats": {
+    "message": "$1 résumés en cache · $2 Mo"
+  },
+  "optCacheCleared": {
+    "message": "Cache vidé."
+  },
+  "keyHintGeminiFree": {
+    "message": "Créer une clé gratuite dans Google AI Studio"
+  },
+  "keyHintGeminiFreeNote": {
+    "message": "Sans carte bancaire. ~1 000 articles par jour avec un appel par article."
+  },
+  "keyHintGemini": {
+    "message": "Clé Google AI Studio (payante)"
+  },
+  "keyHintOpenai": {
+    "message": "Clé OpenAI Platform"
+  },
+  "keyHintAnthropic": {
+    "message": "Clé Anthropic Console"
+  },
+  "keyHintOpenrouter": {
+    "message": "Clé OpenRouter (ou utilisez le bouton Se connecter)"
+  }
+}

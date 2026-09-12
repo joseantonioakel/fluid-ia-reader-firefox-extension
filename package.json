@@ -1,0 +1,30 @@
+{
+  "name": "lector-fluido",
+  "displayName": "Lector Fluido",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Resúmenes con IA superpuestos sobre los párrafos largos de cualquier web.",
+  "scripts": {
+    "dev": "wxt --browser firefox",
+    "dev:chrome": "wxt --browser chrome",
+    "build": "wxt build --browser firefox",
+    "build:chrome": "wxt build --browser chrome",
+    "build:all": "wxt build --browser firefox && wxt build --browser chrome",
+    "zip": "wxt zip --browser firefox",
+    "zip:chrome": "wxt zip --browser chrome",
+    "compile": "wxt prepare && tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "postinstall": "wxt prepare"
+  },
+  "devDependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "@types/firefox-webext-browser": "^120.0.4",
+    "@types/node": "^22.20.1",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "wxt": "^0.21.3"
+  }
+}

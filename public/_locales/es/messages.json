@@ -1,0 +1,572 @@
+{
+  "extensionName": {
+    "message": "Lector Fluido"
+  },
+  "extensionDescription": {
+    "message": "Superpone resúmenes generados por IA sobre los párrafos largos de cualquier web, con un clic para ver el original."
+  },
+  "fabSummarize": {
+    "message": "Resumir"
+  },
+  "fabTitle": {
+    "message": "Resumir esta página"
+  },
+  "fabAriaLabel": {
+    "message": "Resumir esta página con Lector Fluido"
+  },
+  "fabMoreOptions": {
+    "message": "Más opciones"
+  },
+  "fabBusy": {
+    "message": "Resumiendo…"
+  },
+  "fabBusyTitle": {
+    "message": "Resumiendo $1 de $2"
+  },
+  "fabSummaryCount": {
+    "message": "$1 resúmenes"
+  },
+  "fabShowSummaries": {
+    "message": "Ver resúmenes"
+  },
+  "menuHideAll": {
+    "message": "Ocultar todos los resúmenes"
+  },
+  "menuShowAll": {
+    "message": "Mostrar todos los resúmenes"
+  },
+  "menuRegenerate": {
+    "message": "Regenerar esta página"
+  },
+  "menuTldr": {
+    "message": "Ver resumen global (TL;DR)"
+  },
+  "menuReader": {
+    "message": "Abrir en vista de lectura"
+  },
+  "menuOptions": {
+    "message": "Opciones de Lector Fluido"
+  },
+  "menuDisableSite": {
+    "message": "Deshabilitar en este sitio"
+  },
+  "overlayRegion": {
+    "message": "Resumen del párrafo"
+  },
+  "overlayTagSummary": {
+    "message": "resumen"
+  },
+  "overlayTagError": {
+    "message": "error"
+  },
+  "overlayTagFallback": {
+    "message": "resumen · $1"
+  },
+  "overlayFallbackLabel": {
+    "message": "respaldo"
+  },
+  "overlayRetry": {
+    "message": "Reintentar este bloque"
+  },
+  "overlayShowOriginal": {
+    "message": "Ver el texto original"
+  },
+  "overlayBackToSummary": {
+    "message": "Volver al resumen"
+  },
+  "toastClose": {
+    "message": "Cerrar"
+  },
+  "readerTitle": {
+    "message": "Lector Fluido — vista de lectura"
+  },
+  "readerClose": {
+    "message": "Cerrar ✕"
+  },
+  "errNoArticle": {
+    "message": "No se detectó contenido de artículo en esta página."
+  },
+  "degradeLowScore": {
+    "message": "no se identificó con seguridad el artículo"
+  },
+  "degradeTooFewBlocks": {
+    "message": "la estructura de la página confundió al extractor"
+  },
+  "degradeAnchorUnsafe": {
+    "message": "los overlays no se pueden anclar con seguridad"
+  },
+  "degradeDefault": {
+    "message": "la página es difícil de anotar"
+  },
+  "degradePrompt": {
+    "message": "Esta página es difícil de anotar ($1). ¿Abrirla en vista de lectura?"
+  },
+  "degradeOpenReader": {
+    "message": "Abrir vista de lectura"
+  },
+  "degradeTryAnyway": {
+    "message": "Intentar igualmente"
+  },
+  "degradeAlwaysHere": {
+    "message": "Usar siempre aquí"
+  },
+  "noneCompressed": {
+    "message": "Ningún bloque se pudo resumir con suficiente compresión."
+  },
+  "blockNoSummary": {
+    "message": "El proveedor no devolvió resumen para este bloque."
+  },
+  "actionOpenOptions": {
+    "message": "Abrir opciones"
+  },
+  "errNoProvider": {
+    "message": "No hay ningún proveedor de IA configurado o falta dar el consentimiento de privacidad."
+  },
+  "errUnauthorized": {
+    "message": "La credencial fue rechazada. Revísala en las opciones."
+  },
+  "errQuota": {
+    "message": "Se agotó el crédito o la cuota diaria del proveedor. La cuota gratuita de Gemini se reinicia a las 00:00 UTC."
+  },
+  "errRateLimit": {
+    "message": "El proveedor está limitando las peticiones. Prueba de nuevo en un minuto."
+  },
+  "errUnavailable": {
+    "message": "El proveedor no está disponible en este equipo."
+  },
+  "errEmptyResponse": {
+    "message": "El modelo devolvió una respuesta vacía. Prueba de nuevo."
+  },
+  "errGeneric": {
+    "message": "No se pudo resumir: $1"
+  },
+  "noBlocksLowerThreshold": {
+    "message": "Bajar el umbral a $1 palabras"
+  },
+  "noBlocksMessage": {
+    "message": "No hay bloques de más de $1 palabras en esta página."
+  },
+  "popupCurrentSite": {
+    "message": "Sitio actual"
+  },
+  "popupProvider": {
+    "message": "Proveedor de IA"
+  },
+  "popupRun": {
+    "message": "Resumir esta página"
+  },
+  "popupOptions": {
+    "message": "Opciones"
+  },
+  "popupDiagnose": {
+    "message": "Diagnóstico"
+  },
+  "popupChecking": {
+    "message": "Comprobando…"
+  },
+  "popupNotAvailableHere": {
+    "message": "No disponible aquí"
+  },
+  "popupOnlyHttp": {
+    "message": "Solo funciona en páginas http y https."
+  },
+  "popupSiteActive": {
+    "message": "El botón flotante está activo en este sitio."
+  },
+  "popupSiteInactive": {
+    "message": "Actívalo para inyectar el botón flotante aquí."
+  },
+  "popupPermissionDenied": {
+    "message": "Sin permiso para este sitio no se puede activar."
+  },
+  "popupInjected": {
+    "message": "Listo. El botón flotante ya está en la página."
+  },
+  "popupReloadNeeded": {
+    "message": "Activado. Recarga la página para ver el botón flotante."
+  },
+  "popupDisabled": {
+    "message": "Desactivado en este sitio."
+  },
+  "popupLoadFailed": {
+    "message": "No se pudo cargar en esta página. Recárgala e inténtalo de nuevo."
+  },
+  "popupProviderUnknown": {
+    "message": "Proveedor desconocido."
+  },
+  "popupProviderUnavailable": {
+    "message": "No disponible en este equipo."
+  },
+  "popupMissingCredential": {
+    "message": "Falta la credencial: configúrala en Opciones."
+  },
+  "popupMissingConsent": {
+    "message": "Falta aceptar el aviso de privacidad en Opciones."
+  },
+  "popupReady": {
+    "message": "Listo para resumir."
+  },
+  "popupDiagnosisOk": {
+    "message": "✓ Todo correcto. Si aun así no aparece el botón, mira la consola de la página."
+  },
+  "popupDiagnosisProblems": {
+    "message": "⚠ $1"
+  },
+  "diagUrlUnreadable": {
+    "message": "No se pudo leer la URL de la pestaña."
+  },
+  "diagNotHttp": {
+    "message": "La página no es http/https (no se puede inyectar)."
+  },
+  "diagNoHostPermission": {
+    "message": "Falta el permiso de host para este sitio."
+  },
+  "diagNotEnabled": {
+    "message": "El sitio no está en la lista de habilitados."
+  },
+  "diagContentScriptDead": {
+    "message": "El content script no responde: recarga la página."
+  },
+  "diagProviderUnavailable": {
+    "message": "Proveedor no disponible: $1"
+  },
+  "diagNoReason": {
+    "message": "sin motivo"
+  },
+  "diagMissingCredential": {
+    "message": "Falta la credencial del proveedor."
+  },
+  "diagMissingConsent": {
+    "message": "Falta aceptar el consentimiento de privacidad en Opciones."
+  },
+  "diagNoArticle": {
+    "message": "El extractor no identifica artículo en esta página."
+  },
+  "diagBelowThreshold": {
+    "message": "Ningún bloque llega al umbral: el mayor tiene $1 palabras y el umbral es $2."
+  },
+  "errCancelled": {
+    "message": "Operación cancelada."
+  },
+  "testUnavailable": {
+    "message": "No disponible."
+  },
+  "testMissingCredential": {
+    "message": "Falta la credencial."
+  },
+  "testSampleTitle": {
+    "message": "Prueba de conexión"
+  },
+  "testSampleText": {
+    "message": "La niebla cubría el valle al amanecer. Los vecinos salieron a mirar, convencidos de que el río se había desbordado otra vez, y descubrieron que el agua apenas rozaba los primeros escalones del puente viejo."
+  },
+  "providerBrowserBuiltin": {
+    "message": "IA del navegador (local)"
+  },
+  "reasonNanoUnsupported": {
+    "message": "El equipo no cumple los requisitos de Gemini Nano."
+  },
+  "reasonNanoDownload": {
+    "message": "El modelo se descargará en el primer uso (varios GB)."
+  },
+  "reasonFirefoxDistilbart": {
+    "message": "Firefox usa un modelo local pequeño (distilbart, entrenado en inglés): la calidad es menor y los resúmenes pueden salir en inglés."
+  },
+  "reasonNoLocalAi": {
+    "message": "Este navegador no expone IA local. En Firefox requiere el permiso trialML; en Chrome, la Summarizer API."
+  },
+  "errFirefoxEngine": {
+    "message": "No se pudo iniciar el motor local de Firefox: $1"
+  },
+  "errLocalUnavailable": {
+    "message": "IA local no disponible."
+  },
+  "errLocalEmpty": {
+    "message": "El motor local devolvió un resumen vacío."
+  },
+  "errMissingKey": {
+    "message": "Falta la clave de $1."
+  },
+  "errEmptyModelResponse": {
+    "message": "Respuesta vacía del modelo."
+  },
+  "errEmptyModelResponseReason": {
+    "message": "Respuesta vacía del modelo ($1)."
+  },
+  "reasonNoContent": {
+    "message": "sin contenido"
+  },
+  "errToolMissing": {
+    "message": "El modelo no devolvió la herramienta esperada."
+  },
+  "errNetwork": {
+    "message": "No se pudo contactar con $1: $2"
+  },
+  "errUnauthorizedStatus": {
+    "message": "Credencial rechazada ($1). $2"
+  },
+  "errQuotaStatus": {
+    "message": "Crédito agotado ($1). $2"
+  },
+  "errRateLimitDetail": {
+    "message": "Límite de peticiones alcanzado. $1"
+  },
+  "errProviderFailed": {
+    "message": "El proveedor falló ($1). $2"
+  },
+  "errStatus": {
+    "message": "Error $1: $2"
+  },
+  "errInvalidJson": {
+    "message": "El proveedor no devolvió JSON válido."
+  },
+  "errUnexpectedShape": {
+    "message": "Respuesta con forma inesperada."
+  },
+  "errNoSummaries": {
+    "message": "El proveedor no devolvió ningún resumen."
+  },
+  "errNoProviderConfigured": {
+    "message": "No hay ningún proveedor de IA configurado."
+  },
+  "errNoBatchMode": {
+    "message": "Proveedor sin modo batch."
+  },
+  "errNoPerBlockMode": {
+    "message": "Proveedor sin modo per-block."
+  },
+  "oauthClosed": {
+    "message": "El flujo de autorización se cerró sin completarse."
+  },
+  "oauthNoCode": {
+    "message": "OpenRouter no devolvió el código de autorización."
+  },
+  "oauthExchangeRejected": {
+    "message": "OpenRouter rechazó el intercambio ($1): $2"
+  },
+  "oauthNoKey": {
+    "message": "OpenRouter no devolvió ninguna clave."
+  },
+  "optTitle": {
+    "message": "Opciones · Lector Fluido"
+  },
+  "optSubtitle": {
+    "message": "Resúmenes con IA sobre los párrafos largos de cualquier web."
+  },
+  "optWelcomeTitle": {
+    "message": "Bienvenido"
+  },
+  "optWelcomeStep1": {
+    "message": "Elige un proveedor de IA abajo. La **IA local** no necesita cuenta ni conexión."
+  },
+  "optWelcomeStep2": {
+    "message": "Abre un artículo y activa la extensión para ese sitio desde el icono de la barra."
+  },
+  "optWelcomeStep3": {
+    "message": "Pulsa la pestaña flotante **Resumir** del borde derecho."
+  },
+  "optSectionDetection": {
+    "message": "Detección de texto"
+  },
+  "optMinWordsLabel": {
+    "message": "Umbral mínimo de palabras por bloque"
+  },
+  "optMinWordsHint": {
+    "message": "Los párrafos por debajo se agrupan con sus vecinos hasta alcanzarlo. Default: 100."
+  },
+  "optExtractionMode": {
+    "message": "Modo de extracción"
+  },
+  "optModeAuto": {
+    "message": "Automático (in-place, con vista de lectura si falla)"
+  },
+  "optModeInplace": {
+    "message": "Siempre in-place"
+  },
+  "optModeReader": {
+    "message": "Siempre vista de lectura"
+  },
+  "optReaderOriginsLabel": {
+    "message": "Sitios fijados a vista de lectura"
+  },
+  "optSectionSummaries": {
+    "message": "Resúmenes"
+  },
+  "optRatioLabel": {
+    "message": "Longitud objetivo:"
+  },
+  "optRatioValue": {
+    "message": "$1 % del original"
+  },
+  "optRatioHint": {
+    "message": "Proporción respecto al original, con mínimo de 15 y máximo de 100 palabras. Si el resumen supera el 60 % del texto original, ese bloque no recibe overlay."
+  },
+  "optFormat": {
+    "message": "Formato"
+  },
+  "optFormatProportional": {
+    "message": "Párrafo proporcional"
+  },
+  "optFormatSentences": {
+    "message": "1 o 2 frases"
+  },
+  "optFormatBullets": {
+    "message": "Viñetas"
+  },
+  "optLanguage": {
+    "message": "Idioma del resumen"
+  },
+  "optLangAuto": {
+    "message": "Automático (español si es un idioma preferido)"
+  },
+  "optSectionProvider": {
+    "message": "Proveedor de IA"
+  },
+  "optPrimaryProvider": {
+    "message": "Proveedor principal"
+  },
+  "optFallbackProvider": {
+    "message": "Proveedor de respaldo"
+  },
+  "optFallbackHint": {
+    "message": "Se usa si el principal falla tras los reintentos."
+  },
+  "optSectionPrivacy": {
+    "message": "Privacidad"
+  },
+  "optCloudConsent": {
+    "message": "Acepto que el **texto de las páginas que leo se envíe** al proveedor de IA en la nube que configure. Sin esto solo funciona la IA local del navegador."
+  },
+  "optGeminiConsent": {
+    "message": "Entiendo que en el **free tier de Google Gemini**, Google **usa el contenido enviado para entrenar y mejorar sus productos**. Como ese contenido es lo que estoy leyendo, acepto explícitamente esta condición."
+  },
+  "optSectionAdvanced": {
+    "message": "Avanzado"
+  },
+  "optCallStrategy": {
+    "message": "Estrategia de llamadas"
+  },
+  "optStrategyAuto": {
+    "message": "Automática (la decide el proveedor)"
+  },
+  "optStrategyBatch": {
+    "message": "Una llamada por artículo"
+  },
+  "optStrategyPerBlock": {
+    "message": "Una llamada por bloque"
+  },
+  "optStrategyHint": {
+    "message": "La IA local siempre usa una llamada por bloque: su ventana de contexto no admite el artículo completo."
+  },
+  "optBatchSize": {
+    "message": "Bloques por llamada"
+  },
+  "optBatchSizePlaceholder": {
+    "message": "Sin límite"
+  },
+  "optBatchSizeHint": {
+    "message": "Vacío = todos en una sola llamada (default con Gemini free tier). Un valor como 8 recupera la aparición progresiva a cambio de más peticiones."
+  },
+  "optCacheTtl": {
+    "message": "Caché: días de vigencia"
+  },
+  "optCacheMax": {
+    "message": "Caché: tamaño máximo (MB)"
+  },
+  "optClearCache": {
+    "message": "Vaciar caché"
+  },
+  "optDebugLogging": {
+    "message": "**Registro detallado en la consola** — traza extracción, proveedores y llamadas HTTP. Los avisos y errores se registran siempre. Consola de la página para el content script; `about:debugging` (Firefox) o `chrome://extensions` (Chrome) para el background."
+  },
+  "optSectionSites": {
+    "message": "Sitios habilitados"
+  },
+  "optSitesHint": {
+    "message": "Los sitios se habilitan desde el icono de la barra de herramientas. Quitarlos aquí también revoca el permiso de host correspondiente."
+  },
+  "optSaved": {
+    "message": "Guardado."
+  },
+  "optUnavailableSuffix": {
+    "message": " (no disponible)"
+  },
+  "optNone": {
+    "message": "Ninguno"
+  },
+  "optNoneShort": {
+    "message": "Ninguno."
+  },
+  "optBadgeUnavailable": {
+    "message": "no disponible"
+  },
+  "optBadgeConfigured": {
+    "message": "configurado"
+  },
+  "optBadgeNoCredential": {
+    "message": "sin credencial"
+  },
+  "optKeySavedPlaceholder": {
+    "message": "•••••••• (guardada)"
+  },
+  "optKeyPlaceholder": {
+    "message": "Pega aquí tu clave"
+  },
+  "optSave": {
+    "message": "Guardar"
+  },
+  "optCredentialSaved": {
+    "message": "Credencial de $1 guardada."
+  },
+  "optTest": {
+    "message": "Probar"
+  },
+  "optTesting": {
+    "message": "Probando…"
+  },
+  "optTestOk": {
+    "message": "OK · \"$1…\""
+  },
+  "optTestFailed": {
+    "message": "Falló: $1"
+  },
+  "optConnectOpenrouter": {
+    "message": "Conectar con OpenRouter (sin copiar clave)"
+  },
+  "optConnected": {
+    "message": "Conectado con OpenRouter."
+  },
+  "optConnectFailed": {
+    "message": "No se pudo conectar."
+  },
+  "optNoSites": {
+    "message": "Ningún sitio habilitado todavía."
+  },
+  "optRemoveRevoke": {
+    "message": "Quitar y revocar el permiso"
+  },
+  "optCacheStats": {
+    "message": "$1 resúmenes en caché · $2 MB"
+  },
+  "optCacheCleared": {
+    "message": "Caché vaciada."
+  },
+  "keyHintGeminiFree": {
+    "message": "Crear clave gratuita en Google AI Studio"
+  },
+  "keyHintGeminiFreeNote": {
+    "message": "Sin tarjeta de crédito. ~1.000 artículos al día con una llamada por artículo."
+  },
+  "keyHintGemini": {
+    "message": "Clave de Google AI Studio (de pago)"
+  },
+  "keyHintOpenai": {
+    "message": "Clave de OpenAI Platform"
+  },
+  "keyHintAnthropic": {
+    "message": "Clave de Anthropic Console"
+  },
+  "keyHintOpenrouter": {
+    "message": "Clave de OpenRouter (o usa el botón Conectar)"
+  }
+}

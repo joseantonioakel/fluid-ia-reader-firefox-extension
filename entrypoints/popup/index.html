@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title data-i18n="extensionName">Lector Fluido</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header>
+      <h1 data-i18n="extensionName">Lector Fluido</h1>
+    </header>
+
+    <main>
+      <section class="site">
+        <div class="row">
+          <div>
+            <div class="label" data-i18n="popupCurrentSite">Sitio actual</div>
+            <div id="hostname" class="host">—</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="enabled" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <p id="site-note" class="note"></p>
+      </section>
+
+      <section class="provider">
+        <div class="label" data-i18n="popupProvider">Proveedor de IA</div>
+        <div id="provider-name" class="value">—</div>
+        <div id="provider-state" class="note"></div>
+      </section>
+
+      <button id="run" class="primary" type="button" disabled data-i18n="popupRun">Resumir esta página</button>
+      <div class="row">
+        <button id="options" class="ghost" type="button" data-i18n="popupOptions">Opciones</button>
+        <button id="diagnose" class="ghost" type="button" data-i18n="popupDiagnose">Diagnóstico</button>
+      </div>
+      <p id="diagnosis" class="note" hidden></p>
+    </main>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

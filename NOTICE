@@ -1,0 +1,22 @@
+Lector Fluido
+=============
+
+Este producto incluye heurísticas de detección de contenido derivadas de
+Readability.js, de Mozilla.
+
+  Readability.js
+  Copyright (c) Mozilla Foundation
+  Licenciado bajo Apache License, Version 2.0
+  https://github.com/mozilla/readability
+
+Los patrones de puntuación (expresiones regulares de candidatos improbables,
+peso por class/id, puntuación por comas y longitud de texto, propagación a
+ancestros y densidad de enlaces) se han portado a `lib/extract/` para operar
+directamente sobre el DOM vivo, en lugar de sobre un clon serializado.
+
+Readability.js NO se distribuye como dependencia de runtime de esta extensión.
+Se usa únicamente como dependencia de desarrollo, en `tests/`, como referencia
+de calidad contra la que comparar la salida del extractor propio.
+
+Puede obtenerse una copia de la licencia en:
+  http://www.apache.org/licenses/LICENSE-2.0

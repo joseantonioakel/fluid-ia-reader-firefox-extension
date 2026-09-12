@@ -1,0 +1,37 @@
+# Dependencias
+node_modules/
+
+# Salida de WXT y empaquetado
+.output/
+.wxt/
+web-ext-artifacts/
+*.zip
+*.xpi
+*.crx
+*.pem
+stats.html
+
+# Enlace local a la build de Firefox (about:debugging)
+firefox-extension
+
+# Credenciales y configuración local
+.env
+.env.*
+!.env.example
+*.local.json
+.claude/settings.local.json
+
+# Pruebas y cobertura
+coverage/
+.vitest/
+
+# Editores y sistema operativo
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Registros
+*.log
+npm-debug.log*

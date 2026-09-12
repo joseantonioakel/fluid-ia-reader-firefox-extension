@@ -1,0 +1,572 @@
+{
+  "extensionName": {
+    "message": "Lector Fluido"
+  },
+  "extensionDescription": {
+    "message": "Legt KI-generierte Zusammenfassungen über die langen Absätze jeder Website, das Original nur einen Klick entfernt."
+  },
+  "fabSummarize": {
+    "message": "Zusammenfassen"
+  },
+  "fabTitle": {
+    "message": "Diese Seite zusammenfassen"
+  },
+  "fabAriaLabel": {
+    "message": "Diese Seite mit Lector Fluido zusammenfassen"
+  },
+  "fabMoreOptions": {
+    "message": "Weitere Optionen"
+  },
+  "fabBusy": {
+    "message": "Wird zusammengefasst…"
+  },
+  "fabBusyTitle": {
+    "message": "Zusammenfassung $1 von $2"
+  },
+  "fabSummaryCount": {
+    "message": "$1 Zusammenfassungen"
+  },
+  "fabShowSummaries": {
+    "message": "Zusammenfassungen anzeigen"
+  },
+  "menuHideAll": {
+    "message": "Alle Zusammenfassungen ausblenden"
+  },
+  "menuShowAll": {
+    "message": "Alle Zusammenfassungen anzeigen"
+  },
+  "menuRegenerate": {
+    "message": "Diese Seite neu erzeugen"
+  },
+  "menuTldr": {
+    "message": "Gesamtzusammenfassung anzeigen (TL;DR)"
+  },
+  "menuReader": {
+    "message": "In der Leseansicht öffnen"
+  },
+  "menuOptions": {
+    "message": "Einstellungen von Lector Fluido"
+  },
+  "menuDisableSite": {
+    "message": "Auf dieser Website deaktivieren"
+  },
+  "overlayRegion": {
+    "message": "Zusammenfassung des Absatzes"
+  },
+  "overlayTagSummary": {
+    "message": "Zusammenfassung"
+  },
+  "overlayTagError": {
+    "message": "Fehler"
+  },
+  "overlayTagFallback": {
+    "message": "Zusammenfassung · $1"
+  },
+  "overlayFallbackLabel": {
+    "message": "Ersatz"
+  },
+  "overlayRetry": {
+    "message": "Diesen Block erneut versuchen"
+  },
+  "overlayShowOriginal": {
+    "message": "Originaltext anzeigen"
+  },
+  "overlayBackToSummary": {
+    "message": "Zurück zur Zusammenfassung"
+  },
+  "toastClose": {
+    "message": "Schließen"
+  },
+  "readerTitle": {
+    "message": "Lector Fluido — Leseansicht"
+  },
+  "readerClose": {
+    "message": "Schließen ✕"
+  },
+  "errNoArticle": {
+    "message": "Auf dieser Seite wurde kein Artikelinhalt erkannt."
+  },
+  "degradeLowScore": {
+    "message": "der Artikel konnte nicht sicher erkannt werden"
+  },
+  "degradeTooFewBlocks": {
+    "message": "die Seitenstruktur hat den Extraktor verwirrt"
+  },
+  "degradeAnchorUnsafe": {
+    "message": "die Overlays lassen sich nicht sicher verankern"
+  },
+  "degradeDefault": {
+    "message": "die Seite lässt sich schwer annotieren"
+  },
+  "degradePrompt": {
+    "message": "Diese Seite lässt sich schwer annotieren ($1). In der Leseansicht öffnen?"
+  },
+  "degradeOpenReader": {
+    "message": "Leseansicht öffnen"
+  },
+  "degradeTryAnyway": {
+    "message": "Trotzdem versuchen"
+  },
+  "degradeAlwaysHere": {
+    "message": "Hier immer verwenden"
+  },
+  "noneCompressed": {
+    "message": "Kein Block ließ sich ausreichend komprimiert zusammenfassen."
+  },
+  "blockNoSummary": {
+    "message": "Der Anbieter hat für diesen Block keine Zusammenfassung geliefert."
+  },
+  "actionOpenOptions": {
+    "message": "Einstellungen öffnen"
+  },
+  "errNoProvider": {
+    "message": "Es ist kein KI-Anbieter konfiguriert oder die Datenschutz-Einwilligung fehlt."
+  },
+  "errUnauthorized": {
+    "message": "Der Zugangsschlüssel wurde abgelehnt. Prüfen Sie ihn in den Einstellungen."
+  },
+  "errQuota": {
+    "message": "Das Guthaben oder Tageskontingent des Anbieters ist aufgebraucht. Das kostenlose Gemini-Kontingent wird um 00:00 UTC zurückgesetzt."
+  },
+  "errRateLimit": {
+    "message": "Der Anbieter drosselt die Anfragen. Versuchen Sie es in einer Minute erneut."
+  },
+  "errUnavailable": {
+    "message": "Der Anbieter ist auf diesem Gerät nicht verfügbar."
+  },
+  "errEmptyResponse": {
+    "message": "Das Modell hat eine leere Antwort geliefert. Versuchen Sie es erneut."
+  },
+  "errGeneric": {
+    "message": "Zusammenfassung fehlgeschlagen: $1"
+  },
+  "noBlocksLowerThreshold": {
+    "message": "Schwelle auf $1 Wörter senken"
+  },
+  "noBlocksMessage": {
+    "message": "Auf dieser Seite gibt es keine Blöcke mit mehr als $1 Wörtern."
+  },
+  "popupCurrentSite": {
+    "message": "Aktuelle Website"
+  },
+  "popupProvider": {
+    "message": "KI-Anbieter"
+  },
+  "popupRun": {
+    "message": "Diese Seite zusammenfassen"
+  },
+  "popupOptions": {
+    "message": "Einstellungen"
+  },
+  "popupDiagnose": {
+    "message": "Diagnose"
+  },
+  "popupChecking": {
+    "message": "Wird geprüft…"
+  },
+  "popupNotAvailableHere": {
+    "message": "Hier nicht verfügbar"
+  },
+  "popupOnlyHttp": {
+    "message": "Funktioniert nur auf http- und https-Seiten."
+  },
+  "popupSiteActive": {
+    "message": "Die schwebende Schaltfläche ist auf dieser Website aktiv."
+  },
+  "popupSiteInactive": {
+    "message": "Aktivieren, um die schwebende Schaltfläche hier einzublenden."
+  },
+  "popupPermissionDenied": {
+    "message": "Ohne Berechtigung für diese Website kann es nicht aktiviert werden."
+  },
+  "popupInjected": {
+    "message": "Fertig. Die schwebende Schaltfläche ist jetzt auf der Seite."
+  },
+  "popupReloadNeeded": {
+    "message": "Aktiviert. Laden Sie die Seite neu, um die Schaltfläche zu sehen."
+  },
+  "popupDisabled": {
+    "message": "Auf dieser Website deaktiviert."
+  },
+  "popupLoadFailed": {
+    "message": "Konnte auf dieser Seite nicht geladen werden. Laden Sie sie neu und versuchen Sie es erneut."
+  },
+  "popupProviderUnknown": {
+    "message": "Unbekannter Anbieter."
+  },
+  "popupProviderUnavailable": {
+    "message": "Auf diesem Gerät nicht verfügbar."
+  },
+  "popupMissingCredential": {
+    "message": "Zugangsschlüssel fehlt: in den Einstellungen hinterlegen."
+  },
+  "popupMissingConsent": {
+    "message": "Der Datenschutzhinweis muss in den Einstellungen akzeptiert werden."
+  },
+  "popupReady": {
+    "message": "Bereit zum Zusammenfassen."
+  },
+  "popupDiagnosisOk": {
+    "message": "✓ Alles in Ordnung. Erscheint die Schaltfläche trotzdem nicht, prüfen Sie die Seitenkonsole."
+  },
+  "popupDiagnosisProblems": {
+    "message": "⚠ $1"
+  },
+  "diagUrlUnreadable": {
+    "message": "Die URL des Tabs konnte nicht gelesen werden."
+  },
+  "diagNotHttp": {
+    "message": "Die Seite ist nicht http/https (Einfügen nicht möglich)."
+  },
+  "diagNoHostPermission": {
+    "message": "Die Host-Berechtigung für diese Website fehlt."
+  },
+  "diagNotEnabled": {
+    "message": "Die Website steht nicht auf der Liste der aktivierten Websites."
+  },
+  "diagContentScriptDead": {
+    "message": "Das Content-Script antwortet nicht: Seite neu laden."
+  },
+  "diagProviderUnavailable": {
+    "message": "Anbieter nicht verfügbar: $1"
+  },
+  "diagNoReason": {
+    "message": "kein Grund angegeben"
+  },
+  "diagMissingCredential": {
+    "message": "Der Zugangsschlüssel des Anbieters fehlt."
+  },
+  "diagMissingConsent": {
+    "message": "Die Datenschutz-Einwilligung muss in den Einstellungen erteilt werden."
+  },
+  "diagNoArticle": {
+    "message": "Der Extraktor findet auf dieser Seite keinen Artikel."
+  },
+  "diagBelowThreshold": {
+    "message": "Kein Block erreicht die Schwelle: der größte hat $1 Wörter, die Schwelle liegt bei $2."
+  },
+  "errCancelled": {
+    "message": "Vorgang abgebrochen."
+  },
+  "testUnavailable": {
+    "message": "Nicht verfügbar."
+  },
+  "testMissingCredential": {
+    "message": "Zugangsschlüssel fehlt."
+  },
+  "testSampleTitle": {
+    "message": "Verbindungstest"
+  },
+  "testSampleText": {
+    "message": "Nebel lag bei Tagesanbruch über dem Tal. Die Nachbarn kamen heraus, überzeugt, der Fluss sei wieder über die Ufer getreten, und stellten fest, dass das Wasser kaum die ersten Stufen der alten Brücke berührte."
+  },
+  "providerBrowserBuiltin": {
+    "message": "Browser-KI (lokal)"
+  },
+  "reasonNanoUnsupported": {
+    "message": "Dieses Gerät erfüllt die Anforderungen von Gemini Nano nicht."
+  },
+  "reasonNanoDownload": {
+    "message": "Das Modell wird beim ersten Gebrauch heruntergeladen (mehrere GB)."
+  },
+  "reasonFirefoxDistilbart": {
+    "message": "Firefox nutzt ein kleines lokales Modell (distilbart, auf Englisch trainiert): die Qualität ist geringer und Zusammenfassungen können auf Englisch ausfallen."
+  },
+  "reasonNoLocalAi": {
+    "message": "Dieser Browser stellt keine lokale KI bereit. Firefox benötigt die Berechtigung trialML, Chrome die Summarizer API."
+  },
+  "errFirefoxEngine": {
+    "message": "Die lokale Firefox-Engine konnte nicht gestartet werden: $1"
+  },
+  "errLocalUnavailable": {
+    "message": "Lokale KI nicht verfügbar."
+  },
+  "errLocalEmpty": {
+    "message": "Die lokale Engine hat eine leere Zusammenfassung geliefert."
+  },
+  "errMissingKey": {
+    "message": "Der $1-Schlüssel fehlt."
+  },
+  "errEmptyModelResponse": {
+    "message": "Leere Antwort des Modells."
+  },
+  "errEmptyModelResponseReason": {
+    "message": "Leere Antwort des Modells ($1)."
+  },
+  "reasonNoContent": {
+    "message": "kein Inhalt"
+  },
+  "errToolMissing": {
+    "message": "Das Modell hat den erwarteten Tool-Aufruf nicht geliefert."
+  },
+  "errNetwork": {
+    "message": "$1 konnte nicht erreicht werden: $2"
+  },
+  "errUnauthorizedStatus": {
+    "message": "Zugangsschlüssel abgelehnt ($1). $2"
+  },
+  "errQuotaStatus": {
+    "message": "Guthaben aufgebraucht ($1). $2"
+  },
+  "errRateLimitDetail": {
+    "message": "Anfragelimit erreicht. $1"
+  },
+  "errProviderFailed": {
+    "message": "Der Anbieter ist fehlgeschlagen ($1). $2"
+  },
+  "errStatus": {
+    "message": "Fehler $1: $2"
+  },
+  "errInvalidJson": {
+    "message": "Der Anbieter hat kein gültiges JSON geliefert."
+  },
+  "errUnexpectedShape": {
+    "message": "Antwort mit unerwarteter Struktur."
+  },
+  "errNoSummaries": {
+    "message": "Der Anbieter hat keine Zusammenfassungen geliefert."
+  },
+  "errNoProviderConfigured": {
+    "message": "Es ist kein KI-Anbieter konfiguriert."
+  },
+  "errNoBatchMode": {
+    "message": "Anbieter ohne Batch-Modus."
+  },
+  "errNoPerBlockMode": {
+    "message": "Anbieter ohne Pro-Block-Modus."
+  },
+  "oauthClosed": {
+    "message": "Der Autorisierungsablauf wurde vorzeitig geschlossen."
+  },
+  "oauthNoCode": {
+    "message": "OpenRouter hat keinen Autorisierungscode geliefert."
+  },
+  "oauthExchangeRejected": {
+    "message": "OpenRouter hat den Austausch abgelehnt ($1): $2"
+  },
+  "oauthNoKey": {
+    "message": "OpenRouter hat keinen Schlüssel geliefert."
+  },
+  "optTitle": {
+    "message": "Einstellungen · Lector Fluido"
+  },
+  "optSubtitle": {
+    "message": "KI-Zusammenfassungen über den langen Absätzen jeder Website."
+  },
+  "optWelcomeTitle": {
+    "message": "Willkommen"
+  },
+  "optWelcomeStep1": {
+    "message": "Wählen Sie unten einen KI-Anbieter. Die **lokale KI** braucht weder Konto noch Verbindung."
+  },
+  "optWelcomeStep2": {
+    "message": "Öffnen Sie einen Artikel und aktivieren Sie die Erweiterung für diese Website über das Symbol in der Symbolleiste."
+  },
+  "optWelcomeStep3": {
+    "message": "Klicken Sie auf die schwebende Registerkarte **Zusammenfassen** am rechten Rand."
+  },
+  "optSectionDetection": {
+    "message": "Texterkennung"
+  },
+  "optMinWordsLabel": {
+    "message": "Mindestwörter pro Block"
+  },
+  "optMinWordsHint": {
+    "message": "Absätze darunter werden mit ihren Nachbarn gruppiert, bis sie ihn erreichen. Standard: 100."
+  },
+  "optExtractionMode": {
+    "message": "Extraktionsmodus"
+  },
+  "optModeAuto": {
+    "message": "Automatisch (in der Seite, Leseansicht bei Fehlschlag)"
+  },
+  "optModeInplace": {
+    "message": "Immer in der Seite"
+  },
+  "optModeReader": {
+    "message": "Immer Leseansicht"
+  },
+  "optReaderOriginsLabel": {
+    "message": "Websites mit fester Leseansicht"
+  },
+  "optSectionSummaries": {
+    "message": "Zusammenfassungen"
+  },
+  "optRatioLabel": {
+    "message": "Ziellänge:"
+  },
+  "optRatioValue": {
+    "message": "$1 % des Originals"
+  },
+  "optRatioHint": {
+    "message": "Anteil am Original, mindestens 15 und höchstens 100 Wörter. Überschreitet die Zusammenfassung 60 % des Originaltexts, erhält der Block kein Overlay."
+  },
+  "optFormat": {
+    "message": "Format"
+  },
+  "optFormatProportional": {
+    "message": "Proportionaler Absatz"
+  },
+  "optFormatSentences": {
+    "message": "1 oder 2 Sätze"
+  },
+  "optFormatBullets": {
+    "message": "Stichpunkte"
+  },
+  "optLanguage": {
+    "message": "Sprache der Zusammenfassung"
+  },
+  "optLangAuto": {
+    "message": "Automatisch (Spanisch, falls bevorzugte Sprache)"
+  },
+  "optSectionProvider": {
+    "message": "KI-Anbieter"
+  },
+  "optPrimaryProvider": {
+    "message": "Hauptanbieter"
+  },
+  "optFallbackProvider": {
+    "message": "Ersatzanbieter"
+  },
+  "optFallbackHint": {
+    "message": "Wird verwendet, wenn der Hauptanbieter nach Wiederholungen fehlschlägt."
+  },
+  "optSectionPrivacy": {
+    "message": "Datenschutz"
+  },
+  "optCloudConsent": {
+    "message": "Ich akzeptiere, dass der **Text der gelesenen Seiten** an den von mir konfigurierten Cloud-KI-Anbieter **gesendet wird**. Ohne dies funktioniert nur die lokale KI des Browsers."
+  },
+  "optGeminiConsent": {
+    "message": "Mir ist bewusst, dass Google im **kostenlosen Tarif von Google Gemini** die **gesendeten Inhalte zum Trainieren und Verbessern seiner Produkte verwendet**. Da diese Inhalte das sind, was ich lese, akzeptiere ich diese Bedingung ausdrücklich."
+  },
+  "optSectionAdvanced": {
+    "message": "Erweitert"
+  },
+  "optCallStrategy": {
+    "message": "Aufrufstrategie"
+  },
+  "optStrategyAuto": {
+    "message": "Automatisch (der Anbieter entscheidet)"
+  },
+  "optStrategyBatch": {
+    "message": "Ein Aufruf pro Artikel"
+  },
+  "optStrategyPerBlock": {
+    "message": "Ein Aufruf pro Block"
+  },
+  "optStrategyHint": {
+    "message": "Die lokale KI verwendet immer einen Aufruf pro Block: ihr Kontextfenster fasst nicht den ganzen Artikel."
+  },
+  "optBatchSize": {
+    "message": "Blöcke pro Aufruf"
+  },
+  "optBatchSizePlaceholder": {
+    "message": "Kein Limit"
+  },
+  "optBatchSizeHint": {
+    "message": "Leer = alle in einem Aufruf (Standard im kostenlosen Gemini-Tarif). Ein Wert wie 8 stellt das schrittweise Erscheinen wieder her, kostet aber mehr Anfragen."
+  },
+  "optCacheTtl": {
+    "message": "Cache: Aufbewahrung in Tagen"
+  },
+  "optCacheMax": {
+    "message": "Cache: maximale Größe (MB)"
+  },
+  "optClearCache": {
+    "message": "Cache leeren"
+  },
+  "optDebugLogging": {
+    "message": "**Ausführliches Konsolenprotokoll** — protokolliert Extraktion, Anbieter und HTTP-Aufrufe. Warnungen und Fehler werden immer protokolliert. Seitenkonsole für das Content-Script; `about:debugging` (Firefox) oder `chrome://extensions` (Chrome) für den Hintergrund."
+  },
+  "optSectionSites": {
+    "message": "Aktivierte Websites"
+  },
+  "optSitesHint": {
+    "message": "Websites werden über das Symbol in der Symbolleiste aktiviert. Sie hier zu entfernen widerruft auch die zugehörige Host-Berechtigung."
+  },
+  "optSaved": {
+    "message": "Gespeichert."
+  },
+  "optUnavailableSuffix": {
+    "message": " (nicht verfügbar)"
+  },
+  "optNone": {
+    "message": "Keiner"
+  },
+  "optNoneShort": {
+    "message": "Keine."
+  },
+  "optBadgeUnavailable": {
+    "message": "nicht verfügbar"
+  },
+  "optBadgeConfigured": {
+    "message": "konfiguriert"
+  },
+  "optBadgeNoCredential": {
+    "message": "ohne Zugangsschlüssel"
+  },
+  "optKeySavedPlaceholder": {
+    "message": "•••••••• (gespeichert)"
+  },
+  "optKeyPlaceholder": {
+    "message": "Schlüssel hier einfügen"
+  },
+  "optSave": {
+    "message": "Speichern"
+  },
+  "optCredentialSaved": {
+    "message": "Zugangsschlüssel für $1 gespeichert."
+  },
+  "optTest": {
+    "message": "Testen"
+  },
+  "optTesting": {
+    "message": "Wird getestet…"
+  },
+  "optTestOk": {
+    "message": "OK · „$1…“"
+  },
+  "optTestFailed": {
+    "message": "Fehlgeschlagen: $1"
+  },
+  "optConnectOpenrouter": {
+    "message": "Mit OpenRouter verbinden (ohne Schlüssel kopieren)"
+  },
+  "optConnected": {
+    "message": "Mit OpenRouter verbunden."
+  },
+  "optConnectFailed": {
+    "message": "Verbindung fehlgeschlagen."
+  },
+  "optNoSites": {
+    "message": "Noch keine Websites aktiviert."
+  },
+  "optRemoveRevoke": {
+    "message": "Entfernen und Berechtigung widerrufen"
+  },
+  "optCacheStats": {
+    "message": "$1 Zusammenfassungen im Cache · $2 MB"
+  },
+  "optCacheCleared": {
+    "message": "Cache geleert."
+  },
+  "keyHintGeminiFree": {
+    "message": "Kostenlosen Schlüssel in Google AI Studio erstellen"
+  },
+  "keyHintGeminiFreeNote": {
+    "message": "Ohne Kreditkarte. ~1.000 Artikel pro Tag bei einem Aufruf pro Artikel."
+  },
+  "keyHintGemini": {
+    "message": "Google-AI-Studio-Schlüssel (kostenpflichtig)"
+  },
+  "keyHintOpenai": {
+    "message": "OpenAI-Platform-Schlüssel"
+  },
+  "keyHintAnthropic": {
+    "message": "Anthropic-Console-Schlüssel"
+  },
+  "keyHintOpenrouter": {
+    "message": "OpenRouter-Schlüssel (oder die Schaltfläche „Verbinden“ verwenden)"
+  }
+}

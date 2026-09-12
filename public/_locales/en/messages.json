@@ -1,0 +1,572 @@
+{
+  "extensionName": {
+    "message": "Lector Fluido"
+  },
+  "extensionDescription": {
+    "message": "Overlays AI-generated summaries on the long paragraphs of any website, one click away from the original text."
+  },
+  "fabSummarize": {
+    "message": "Summarize"
+  },
+  "fabTitle": {
+    "message": "Summarize this page"
+  },
+  "fabAriaLabel": {
+    "message": "Summarize this page with Lector Fluido"
+  },
+  "fabMoreOptions": {
+    "message": "More options"
+  },
+  "fabBusy": {
+    "message": "Summarizing…"
+  },
+  "fabBusyTitle": {
+    "message": "Summarizing $1 of $2"
+  },
+  "fabSummaryCount": {
+    "message": "$1 summaries"
+  },
+  "fabShowSummaries": {
+    "message": "Show summaries"
+  },
+  "menuHideAll": {
+    "message": "Hide all summaries"
+  },
+  "menuShowAll": {
+    "message": "Show all summaries"
+  },
+  "menuRegenerate": {
+    "message": "Regenerate this page"
+  },
+  "menuTldr": {
+    "message": "Show overall summary (TL;DR)"
+  },
+  "menuReader": {
+    "message": "Open in reader view"
+  },
+  "menuOptions": {
+    "message": "Lector Fluido options"
+  },
+  "menuDisableSite": {
+    "message": "Disable on this site"
+  },
+  "overlayRegion": {
+    "message": "Paragraph summary"
+  },
+  "overlayTagSummary": {
+    "message": "summary"
+  },
+  "overlayTagError": {
+    "message": "error"
+  },
+  "overlayTagFallback": {
+    "message": "summary · $1"
+  },
+  "overlayFallbackLabel": {
+    "message": "fallback"
+  },
+  "overlayRetry": {
+    "message": "Retry this block"
+  },
+  "overlayShowOriginal": {
+    "message": "Show the original text"
+  },
+  "overlayBackToSummary": {
+    "message": "Back to the summary"
+  },
+  "toastClose": {
+    "message": "Close"
+  },
+  "readerTitle": {
+    "message": "Lector Fluido — reader view"
+  },
+  "readerClose": {
+    "message": "Close ✕"
+  },
+  "errNoArticle": {
+    "message": "No article content was detected on this page."
+  },
+  "degradeLowScore": {
+    "message": "the article could not be identified with confidence"
+  },
+  "degradeTooFewBlocks": {
+    "message": "the page structure confused the extractor"
+  },
+  "degradeAnchorUnsafe": {
+    "message": "the overlays cannot be anchored safely"
+  },
+  "degradeDefault": {
+    "message": "the page is hard to annotate"
+  },
+  "degradePrompt": {
+    "message": "This page is hard to annotate ($1). Open it in reader view?"
+  },
+  "degradeOpenReader": {
+    "message": "Open reader view"
+  },
+  "degradeTryAnyway": {
+    "message": "Try anyway"
+  },
+  "degradeAlwaysHere": {
+    "message": "Always use it here"
+  },
+  "noneCompressed": {
+    "message": "No block could be summarized with enough compression."
+  },
+  "blockNoSummary": {
+    "message": "The provider returned no summary for this block."
+  },
+  "actionOpenOptions": {
+    "message": "Open options"
+  },
+  "errNoProvider": {
+    "message": "No AI provider is configured, or the privacy consent is missing."
+  },
+  "errUnauthorized": {
+    "message": "The credential was rejected. Check it in the options."
+  },
+  "errQuota": {
+    "message": "The provider’s credit or daily quota is exhausted. Gemini’s free quota resets at 00:00 UTC."
+  },
+  "errRateLimit": {
+    "message": "The provider is rate-limiting requests. Try again in a minute."
+  },
+  "errUnavailable": {
+    "message": "The provider is not available on this device."
+  },
+  "errEmptyResponse": {
+    "message": "The model returned an empty response. Try again."
+  },
+  "errGeneric": {
+    "message": "Could not summarize: $1"
+  },
+  "noBlocksLowerThreshold": {
+    "message": "Lower the threshold to $1 words"
+  },
+  "noBlocksMessage": {
+    "message": "There are no blocks over $1 words on this page."
+  },
+  "popupCurrentSite": {
+    "message": "Current site"
+  },
+  "popupProvider": {
+    "message": "AI provider"
+  },
+  "popupRun": {
+    "message": "Summarize this page"
+  },
+  "popupOptions": {
+    "message": "Options"
+  },
+  "popupDiagnose": {
+    "message": "Diagnostics"
+  },
+  "popupChecking": {
+    "message": "Checking…"
+  },
+  "popupNotAvailableHere": {
+    "message": "Not available here"
+  },
+  "popupOnlyHttp": {
+    "message": "It only works on http and https pages."
+  },
+  "popupSiteActive": {
+    "message": "The floating button is active on this site."
+  },
+  "popupSiteInactive": {
+    "message": "Enable it to inject the floating button here."
+  },
+  "popupPermissionDenied": {
+    "message": "It cannot be enabled without permission for this site."
+  },
+  "popupInjected": {
+    "message": "Done. The floating button is now on the page."
+  },
+  "popupReloadNeeded": {
+    "message": "Enabled. Reload the page to see the floating button."
+  },
+  "popupDisabled": {
+    "message": "Disabled on this site."
+  },
+  "popupLoadFailed": {
+    "message": "It could not load on this page. Reload it and try again."
+  },
+  "popupProviderUnknown": {
+    "message": "Unknown provider."
+  },
+  "popupProviderUnavailable": {
+    "message": "Not available on this device."
+  },
+  "popupMissingCredential": {
+    "message": "Credential missing: set it up in Options."
+  },
+  "popupMissingConsent": {
+    "message": "The privacy notice must be accepted in Options."
+  },
+  "popupReady": {
+    "message": "Ready to summarize."
+  },
+  "popupDiagnosisOk": {
+    "message": "✓ All good. If the button still does not appear, check the page console."
+  },
+  "popupDiagnosisProblems": {
+    "message": "⚠ $1"
+  },
+  "diagUrlUnreadable": {
+    "message": "The tab URL could not be read."
+  },
+  "diagNotHttp": {
+    "message": "The page is not http/https (cannot inject)."
+  },
+  "diagNoHostPermission": {
+    "message": "Host permission for this site is missing."
+  },
+  "diagNotEnabled": {
+    "message": "The site is not in the enabled list."
+  },
+  "diagContentScriptDead": {
+    "message": "The content script is not responding: reload the page."
+  },
+  "diagProviderUnavailable": {
+    "message": "Provider unavailable: $1"
+  },
+  "diagNoReason": {
+    "message": "no reason given"
+  },
+  "diagMissingCredential": {
+    "message": "The provider credential is missing."
+  },
+  "diagMissingConsent": {
+    "message": "The privacy consent must be accepted in Options."
+  },
+  "diagNoArticle": {
+    "message": "The extractor finds no article on this page."
+  },
+  "diagBelowThreshold": {
+    "message": "No block reaches the threshold: the largest has $1 words and the threshold is $2."
+  },
+  "errCancelled": {
+    "message": "Operation cancelled."
+  },
+  "testUnavailable": {
+    "message": "Not available."
+  },
+  "testMissingCredential": {
+    "message": "Credential missing."
+  },
+  "testSampleTitle": {
+    "message": "Connection test"
+  },
+  "testSampleText": {
+    "message": "Fog covered the valley at dawn. The neighbours came out to look, convinced the river had flooded again, and found that the water barely touched the first steps of the old bridge."
+  },
+  "providerBrowserBuiltin": {
+    "message": "Browser AI (on-device)"
+  },
+  "reasonNanoUnsupported": {
+    "message": "This device does not meet the Gemini Nano requirements."
+  },
+  "reasonNanoDownload": {
+    "message": "The model will download on first use (several GB)."
+  },
+  "reasonFirefoxDistilbart": {
+    "message": "Firefox uses a small on-device model (distilbart, trained in English): quality is lower and summaries may come out in English."
+  },
+  "reasonNoLocalAi": {
+    "message": "This browser exposes no on-device AI. Firefox needs the trialML permission; Chrome needs the Summarizer API."
+  },
+  "errFirefoxEngine": {
+    "message": "Could not start the Firefox on-device engine: $1"
+  },
+  "errLocalUnavailable": {
+    "message": "On-device AI not available."
+  },
+  "errLocalEmpty": {
+    "message": "The on-device engine returned an empty summary."
+  },
+  "errMissingKey": {
+    "message": "The $1 key is missing."
+  },
+  "errEmptyModelResponse": {
+    "message": "Empty response from the model."
+  },
+  "errEmptyModelResponseReason": {
+    "message": "Empty response from the model ($1)."
+  },
+  "reasonNoContent": {
+    "message": "no content"
+  },
+  "errToolMissing": {
+    "message": "The model did not return the expected tool call."
+  },
+  "errNetwork": {
+    "message": "Could not reach $1: $2"
+  },
+  "errUnauthorizedStatus": {
+    "message": "Credential rejected ($1). $2"
+  },
+  "errQuotaStatus": {
+    "message": "Credit exhausted ($1). $2"
+  },
+  "errRateLimitDetail": {
+    "message": "Request limit reached. $1"
+  },
+  "errProviderFailed": {
+    "message": "The provider failed ($1). $2"
+  },
+  "errStatus": {
+    "message": "Error $1: $2"
+  },
+  "errInvalidJson": {
+    "message": "The provider did not return valid JSON."
+  },
+  "errUnexpectedShape": {
+    "message": "Response with an unexpected shape."
+  },
+  "errNoSummaries": {
+    "message": "The provider returned no summaries."
+  },
+  "errNoProviderConfigured": {
+    "message": "No AI provider is configured."
+  },
+  "errNoBatchMode": {
+    "message": "Provider has no batch mode."
+  },
+  "errNoPerBlockMode": {
+    "message": "Provider has no per-block mode."
+  },
+  "oauthClosed": {
+    "message": "The authorization flow was closed before completing."
+  },
+  "oauthNoCode": {
+    "message": "OpenRouter did not return the authorization code."
+  },
+  "oauthExchangeRejected": {
+    "message": "OpenRouter rejected the exchange ($1): $2"
+  },
+  "oauthNoKey": {
+    "message": "OpenRouter did not return a key."
+  },
+  "optTitle": {
+    "message": "Options · Lector Fluido"
+  },
+  "optSubtitle": {
+    "message": "AI summaries over the long paragraphs of any website."
+  },
+  "optWelcomeTitle": {
+    "message": "Welcome"
+  },
+  "optWelcomeStep1": {
+    "message": "Pick an AI provider below. The **on-device AI** needs no account or connection."
+  },
+  "optWelcomeStep2": {
+    "message": "Open an article and enable the extension for that site from the toolbar icon."
+  },
+  "optWelcomeStep3": {
+    "message": "Click the floating **Summarize** tab on the right edge."
+  },
+  "optSectionDetection": {
+    "message": "Text detection"
+  },
+  "optMinWordsLabel": {
+    "message": "Minimum words per block"
+  },
+  "optMinWordsHint": {
+    "message": "Paragraphs below it are grouped with their neighbours until they reach it. Default: 100."
+  },
+  "optExtractionMode": {
+    "message": "Extraction mode"
+  },
+  "optModeAuto": {
+    "message": "Automatic (in place, reader view if it fails)"
+  },
+  "optModeInplace": {
+    "message": "Always in place"
+  },
+  "optModeReader": {
+    "message": "Always reader view"
+  },
+  "optReaderOriginsLabel": {
+    "message": "Sites pinned to reader view"
+  },
+  "optSectionSummaries": {
+    "message": "Summaries"
+  },
+  "optRatioLabel": {
+    "message": "Target length:"
+  },
+  "optRatioValue": {
+    "message": "$1% of the original"
+  },
+  "optRatioHint": {
+    "message": "Proportion of the original, with a minimum of 15 and a maximum of 100 words. If the summary exceeds 60% of the original text, that block gets no overlay."
+  },
+  "optFormat": {
+    "message": "Format"
+  },
+  "optFormatProportional": {
+    "message": "Proportional paragraph"
+  },
+  "optFormatSentences": {
+    "message": "1 or 2 sentences"
+  },
+  "optFormatBullets": {
+    "message": "Bullet points"
+  },
+  "optLanguage": {
+    "message": "Summary language"
+  },
+  "optLangAuto": {
+    "message": "Automatic (Spanish if it is a preferred language)"
+  },
+  "optSectionProvider": {
+    "message": "AI provider"
+  },
+  "optPrimaryProvider": {
+    "message": "Primary provider"
+  },
+  "optFallbackProvider": {
+    "message": "Fallback provider"
+  },
+  "optFallbackHint": {
+    "message": "Used if the primary one fails after retries."
+  },
+  "optSectionPrivacy": {
+    "message": "Privacy"
+  },
+  "optCloudConsent": {
+    "message": "I accept that the **text of the pages I read is sent** to the cloud AI provider I configure. Without this, only the browser’s on-device AI works."
+  },
+  "optGeminiConsent": {
+    "message": "I understand that on the **Google Gemini free tier**, Google **uses the submitted content to train and improve its products**. Since that content is what I am reading, I explicitly accept this condition."
+  },
+  "optSectionAdvanced": {
+    "message": "Advanced"
+  },
+  "optCallStrategy": {
+    "message": "Call strategy"
+  },
+  "optStrategyAuto": {
+    "message": "Automatic (decided by the provider)"
+  },
+  "optStrategyBatch": {
+    "message": "One call per article"
+  },
+  "optStrategyPerBlock": {
+    "message": "One call per block"
+  },
+  "optStrategyHint": {
+    "message": "The on-device AI always uses one call per block: its context window cannot take the whole article."
+  },
+  "optBatchSize": {
+    "message": "Blocks per call"
+  },
+  "optBatchSizePlaceholder": {
+    "message": "No limit"
+  },
+  "optBatchSizeHint": {
+    "message": "Empty = all in a single call (default on the Gemini free tier). A value like 8 restores progressive rendering at the cost of more requests."
+  },
+  "optCacheTtl": {
+    "message": "Cache: days to keep"
+  },
+  "optCacheMax": {
+    "message": "Cache: maximum size (MB)"
+  },
+  "optClearCache": {
+    "message": "Clear cache"
+  },
+  "optDebugLogging": {
+    "message": "**Verbose console logging** — traces extraction, providers and HTTP calls. Warnings and errors are always logged. Page console for the content script; `about:debugging` (Firefox) or `chrome://extensions` (Chrome) for the background."
+  },
+  "optSectionSites": {
+    "message": "Enabled sites"
+  },
+  "optSitesHint": {
+    "message": "Sites are enabled from the toolbar icon. Removing them here also revokes the matching host permission."
+  },
+  "optSaved": {
+    "message": "Saved."
+  },
+  "optUnavailableSuffix": {
+    "message": " (unavailable)"
+  },
+  "optNone": {
+    "message": "None"
+  },
+  "optNoneShort": {
+    "message": "None."
+  },
+  "optBadgeUnavailable": {
+    "message": "unavailable"
+  },
+  "optBadgeConfigured": {
+    "message": "configured"
+  },
+  "optBadgeNoCredential": {
+    "message": "no credential"
+  },
+  "optKeySavedPlaceholder": {
+    "message": "•••••••• (saved)"
+  },
+  "optKeyPlaceholder": {
+    "message": "Paste your key here"
+  },
+  "optSave": {
+    "message": "Save"
+  },
+  "optCredentialSaved": {
+    "message": "$1 credential saved."
+  },
+  "optTest": {
+    "message": "Test"
+  },
+  "optTesting": {
+    "message": "Testing…"
+  },
+  "optTestOk": {
+    "message": "OK · \"$1…\""
+  },
+  "optTestFailed": {
+    "message": "Failed: $1"
+  },
+  "optConnectOpenrouter": {
+    "message": "Connect with OpenRouter (no key to copy)"
+  },
+  "optConnected": {
+    "message": "Connected to OpenRouter."
+  },
+  "optConnectFailed": {
+    "message": "Could not connect."
+  },
+  "optNoSites": {
+    "message": "No sites enabled yet."
+  },
+  "optRemoveRevoke": {
+    "message": "Remove and revoke the permission"
+  },
+  "optCacheStats": {
+    "message": "$1 cached summaries · $2 MB"
+  },
+  "optCacheCleared": {
+    "message": "Cache cleared."
+  },
+  "keyHintGeminiFree": {
+    "message": "Create a free key in Google AI Studio"
+  },
+  "keyHintGeminiFreeNote": {
+    "message": "No credit card. ~1,000 articles a day with one call per article."
+  },
+  "keyHintGemini": {
+    "message": "Google AI Studio key (paid)"
+  },
+  "keyHintOpenai": {
+    "message": "OpenAI Platform key"
+  },
+  "keyHintAnthropic": {
+    "message": "Anthropic Console key"
+  },
+  "keyHintOpenrouter": {
+    "message": "OpenRouter key (or use the Connect button)"
+  }
+}
