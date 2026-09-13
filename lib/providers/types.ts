@@ -1,6 +1,6 @@
 import { t } from '../i18n';
 import { createLogger } from '../log';
-import type { ArticlePayload, BlockPayload, BlockSummary, ErrorCode, ProviderId, SummaryFormat } from '../types';
+import type { ArticlePayload, BlockPayload, BlockSummary, ErrorCode, Fallacy, ProviderId, SummaryFormat } from '../types';
 
 const httpLog = createLogger('http');
 
@@ -57,6 +57,7 @@ export interface BatchRequest {
   format: SummaryFormat;
   language: string;
   includeTldr: boolean;
+  detectFallacies: boolean;
   apiKey: string | null;
   model: string;
   signal: AbortSignal;
@@ -163,6 +164,29 @@ export function parseJsonLoose(raw: string): unknown {
   throw new ProviderError(t('errInvalidJson'), 'empty-response', true);
 }
 
+/** Tope de falacias por bloque y de longitud de cada campo: el modelo puede irse de más. */
+const MAX_FALLACIES = 3;
+const LIMITS = { name: 80, quote: 300, explanation: 600 } as const;
+
+/** Normaliza la lista de falacias de un bloque; descarta las entradas malformadas. */
+export function coerceFallacies(raw: unknown): Fallacy[] {
+  if (!Array.isArray(raw)) return [];
+  const out: Fallacy[] = [];
+  for (const entry of raw) {
+    if (typeof entry !== 'object' || entry === null) continue;
+    const e = entry as Record<string, unknown>;
+    const field = (key: keyof typeof LIMITS): string =>
+      typeof e[key] === 'string' ? (e[key] as string).trim().slice(0, LIMITS[key]) : '';
+    const name = field('name');
+    const explanation = field('explanation');
+    // Sin nombre o sin explicación no hay nada que mostrar; la cita puede faltar.
+    if (!name || !explanation) continue;
+    out.push({ name, quote: field('quote'), explanation });
+    if (out.length >= MAX_FALLACIES) break;
+  }
+  return out;
+}
+
 export function coerceBatchResponse(value: unknown): BatchResponse {
   if (typeof value !== 'object' || value === null) {
     throw new ProviderError(t('errUnexpectedShape'), 'empty-response', true);
@@ -175,7 +199,9 @@ export function coerceBatchResponse(value: unknown): BatchResponse {
     const e = entry as Record<string, unknown>;
     const id = typeof e.id === 'number' ? e.id : Number.parseInt(String(e.id), 10);
     const summary = typeof e.summary === 'string' ? e.summary.trim() : '';
-    if (Number.isFinite(id) && summary) summaries.push({ id, summary });
+    if (!Number.isFinite(id) || !summary) continue;
+    const fallacies = coerceFallacies(e.fallacies);
+    summaries.push(fallacies.length ? { id, summary, fallacies } : { id, summary });
   }
   if (summaries.length === 0) {
     throw new ProviderError(t('errNoSummaries'), 'empty-response', true);

@@ -568,5 +568,29 @@
   },
   "keyHintOpenrouter": {
     "message": "OpenRouter key (or use the Connect button)"
+  },
+  "fallacyBadgeLabel": {
+    "message": "Logical fallacy: $1"
+  },
+  "fallacyTitle": {
+    "message": "Logical fallacy"
+  },
+  "fallacyQuoteLabel": {
+    "message": "Where"
+  },
+  "fallacyWhyLabel": {
+    "message": "Why"
+  },
+  "fallacyClose": {
+    "message": "Close"
+  },
+  "optDetectFallacies": {
+    "message": "**Detect logical fallacies** — flags with a ⚠ badge every block whose original text commits a fallacy; hovering or clicking shows which one, where and why. Only with cloud providers in \"one call per article\" mode: the on-device AI cannot do it."
+  },
+  "warnAnchorPartial": {
+    "message": "$1 paragraphs that could not be anchored were skipped. If summaries look misplaced, try the reader view."
+  },
+  "warnLowScore": {
+    "message": "The article was identified with low confidence. If paragraphs are missing or extra, try the reader view."
   }
 }

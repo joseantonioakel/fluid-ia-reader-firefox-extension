@@ -154,11 +154,45 @@ export interface ExtractionResult {
   /** Todos los bloques candidatos, incluidos los cortos (para diagnóstico). */
   totalCandidates: number;
   totalWords: number;
-  /** Motivo por el que conviene degradar al Modo B, si lo hay. */
+  /** Motivo por el que conviene degradar al Modo B, si lo hay. Bloquea: se pregunta antes de seguir. */
   degradeReason: DegradeReason | null;
+  /** Dudas que no impiden seguir in-place, pero merecen un aviso no bloqueante. */
+  warnings: DegradeReason[];
+  /** Bloques retirados por no poder anclarse, con el motivo: para el log y el diagnóstico. */
+  unsafeBlocks: UnsafeBlock[];
+  /** Fracción de las palabras del contenedor que cubren los bloques. Mide cuánto se pierde el extractor. */
+  coverage: number;
 }
 
 export type DegradeReason = 'low-score' | 'too-few-blocks' | 'anchor-unsafe';
+
+export type AnchorProblem = 'invisible' | 'overlap';
+
+export interface UnsafeBlock {
+  /** Id que tenía el bloque ANTES de retirarlo (los ids se reasignan después). */
+  id: number;
+  reason: AnchorProblem;
+  /** Descripción corta del ancla, para reconocerla en el log: `P#intro` o `DIV.lead`. */
+  anchor: string;
+  words: number;
+}
+
+export interface AnchorReport {
+  safe: ExtractedBlock[];
+  unsafe: UnsafeBlock[];
+}
+
+/** Umbrales de la degradación. Puestos por criterio, pendientes de medir sobre páginas reales. */
+export const DEGRADE = {
+  /** Con la puntuación por debajo, hace falta evidencia directa (bloques y cobertura) para seguir. */
+  minBlocksForLowScore: 3,
+  minCoverageForLowScore: 0.5,
+  /** Con más de estas palabras, cubrir menos de esta fracción significa que el extractor se pierde el artículo. */
+  minWordsForCoverage: 500,
+  minCoverage: 0.4,
+  /** Fracción de bloques inseguros a partir de la cual no se sigue in-place. */
+  maxUnsafeFraction: 1 / 3,
+} as const;
 
 function hasExcludedAncestor(el: Element, root: Element): boolean {
   let node: Element | null = el.parentElement;
@@ -201,39 +235,51 @@ export function isEligibleBlock(el: HTMLElement, root: Element): boolean {
   return true;
 }
 
+function describeAnchor(element: HTMLElement): string {
+  const cls = element.className && typeof element.className === 'string' ? element.className.split(/\s+/)[0] : '';
+  return element.id ? `${element.tagName}#${element.id}` : cls ? `${element.tagName}.${cls}` : element.tagName;
+}
+
+function overlaps(a: DOMRect, b: DOMRect): boolean {
+  const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+  const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+  return overlapY > 4 && overlapX > 4;
+}
+
 /**
- * Verificación de anclaje: detecta las condiciones que romperían un overlay
- * in-place y que deben degradar al Modo B.
+ * Verificación de anclaje, bloque a bloque. Un bloque es inseguro si alguno de
+ * sus elementos mide 0 (está en un acordeón cerrado, una pestaña oculta o un
+ * "leer más" plegado: pasa la comprobación de visibilidad porque el `display:
+ * none` está en un ancestro) o si se solapa con un bloque ya aceptado (layout
+ * absoluto, donde el overlay taparía contenido ajeno). Se retira solo ese
+ * bloque; el resto sigue siendo perfectamente anclable.
+ *
+ * No se mira si hay ancestros `fixed` o `sticky`: el overlay se posiciona en
+ * absoluto dentro del propio párrafo y se mueve con él, así que no le afectan.
  */
-export function verifyAnchoring(blocks: ExtractedBlock[]): boolean {
-  if (blocks.length === 0) return false;
-  const rects: DOMRect[] = [];
-  for (const element of blocks.flatMap((block) => block.elements)) {
-    const rect = element.getBoundingClientRect();
-    if (rect.height <= 0 || rect.width <= 0) return false;
+export function verifyAnchoring(blocks: ExtractedBlock[]): AnchorReport {
+  const safe: ExtractedBlock[] = [];
+  const unsafe: UnsafeBlock[] = [];
+  const keptRects: DOMRect[] = [];
 
-    let node: HTMLElement | null = element;
-    let depth = 0;
-    while (node && depth < 12) {
-      const style = node.ownerDocument?.defaultView?.getComputedStyle(node);
-      if (style && (style.position === 'fixed' || style.position === 'sticky')) return false;
-      node = node.parentElement;
-      depth += 1;
-    }
-    rects.push(rect);
-  }
+  for (const block of blocks) {
+    const rects = block.elements.map((element) => element.getBoundingClientRect());
+    const report = (reason: AnchorProblem) =>
+      unsafe.push({ id: block.id, reason, anchor: describeAnchor(block.element), words: block.words });
 
-  // Cajas solapadas: señal de layout absoluto donde el overlay taparía contenido ajeno.
-  for (let i = 0; i < rects.length; i += 1) {
-    for (let j = i + 1; j < rects.length; j += 1) {
-      const a = rects[i]!;
-      const b = rects[j]!;
-      const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
-      const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left);
-      if (overlapY > 4 && overlapX > 4) return false;
+    if (rects.some((rect) => rect.height <= 0 || rect.width <= 0)) {
+      report('invisible');
+      continue;
     }
+    // De un par solapado se retira el segundo en orden de documento.
+    if (rects.some((rect) => keptRects.some((kept) => overlaps(rect, kept)))) {
+      report('overlap');
+      continue;
+    }
+    safe.push(block);
+    keptRects.push(...rects);
   }
-  return true;
+  return { safe, unsafe };
 }
 
 export interface ExtractOptions {
@@ -260,6 +306,9 @@ export function extract(root: ParentNode & Element, options: ExtractOptions): Ex
       totalCandidates: 0,
       totalWords: countWords(getInnerText(root)),
       degradeReason: 'low-score',
+      warnings: [],
+      unsafeBlocks: [],
+      coverage: 0,
     };
   }
 
@@ -282,17 +331,51 @@ export function extract(root: ParentNode & Element, options: ExtractOptions): Ex
   );
 
   // Los párrafos cortos consecutivos se fusionan hasta alcanzar el umbral.
-  const blocks = groupBlocks(deduped, options.minWords);
+  let blocks = groupBlocks(deduped, options.minWords);
   const fullText = deduped.map((block) => block.text).join('\n\n');
   const totalWords = countWords(getInnerText(container));
 
+  // Anclaje por bloque: los inseguros se retiran y el resto conserva ids contiguos
+  // (el modo per-block usa `id - 1` para encontrar el párrafo anterior).
+  let unsafeBlocks: UnsafeBlock[] = [];
+  const totalBlocks = blocks.length;
+  if (!options.skipAnchorCheck && blocks.length > 0) {
+    const report = verifyAnchoring(blocks);
+    unsafeBlocks = report.unsafe;
+    blocks = report.safe.map((block, id) => ({ ...block, id }));
+  }
+
+  const blockWords = blocks.reduce((sum, block) => sum + block.words, 0);
+  const coverage = totalWords > 0 ? Math.min(1, blockWords / totalWords) : 0;
+
+  /*
+   * La puntuación del contenedor es un indicio; los bloques encontrados y la
+   * cobertura son la evidencia. Solo se bloquea (degradeReason) cuando la
+   * evidencia también es mala; si la puntuación es baja pero hay bloques de
+   * sobra, se sigue in-place con un aviso.
+   */
   let degradeReason: DegradeReason | null = null;
+  const warnings: DegradeReason[] = [];
+
   if (candidate.score < MIN_CONFIDENT_SCORE) {
-    degradeReason = 'low-score';
-  } else if (blocks.length < 2 && totalWords > 500) {
+    const weakEvidence =
+      blocks.length < DEGRADE.minBlocksForLowScore || coverage < DEGRADE.minCoverageForLowScore;
+    if (weakEvidence) degradeReason = 'low-score';
+    else warnings.push('low-score');
+  }
+  if (
+    !degradeReason &&
+    totalWords > DEGRADE.minWordsForCoverage &&
+    (blocks.length < 2 || coverage < DEGRADE.minCoverage)
+  ) {
     degradeReason = 'too-few-blocks';
-  } else if (!options.skipAnchorCheck && blocks.length > 0 && !verifyAnchoring(blocks)) {
-    degradeReason = 'anchor-unsafe';
+  }
+  if (unsafeBlocks.length > 0) {
+    if (!degradeReason && unsafeBlocks.length > totalBlocks * DEGRADE.maxUnsafeFraction) {
+      degradeReason = 'anchor-unsafe';
+    } else if (!degradeReason) {
+      warnings.push('anchor-unsafe');
+    }
   }
 
   return {
@@ -304,5 +387,8 @@ export function extract(root: ParentNode & Element, options: ExtractOptions): Ex
     totalCandidates: deduped.length,
     totalWords,
     degradeReason,
+    warnings,
+    unsafeBlocks,
+    coverage,
   };
 }

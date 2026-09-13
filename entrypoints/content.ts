@@ -1,7 +1,8 @@
 import { defineContentScript, browser } from '#imports';
 import { t } from '../lib/i18n';
 import { createLogger, initLogging } from '../lib/log';
-import { extract, type ExtractedBlock, type ExtractionResult } from '../lib/extract/blocks';
+import { onMessage } from '../lib/messaging';
+import { extract, verifyAnchoring, type ExtractedBlock, type ExtractionResult } from '../lib/extract/blocks';
 import { openReaderView, type ReaderView } from '../lib/reader';
 import { FloatingButton, type FabAction, type FabPosition } from '../lib/ui/fab';
 import { BlockOverlay } from '../lib/ui/overlay';
@@ -68,12 +69,13 @@ class LectorFluido {
       log.error('no se pudo crear el botón flotante', error);
     }
 
-    browser.runtime.onMessage.addListener((message: { kind: string; summaries?: BlockSummary[] }) => {
+    // onMessage (lib/messaging) responde de forma compatible con Chrome y Firefox.
+    onMessage<{ kind: string; summaries?: BlockSummary[] }>((message) => {
       log.debug('← mensaje', message.kind);
-      if (message.kind === 'ping') return Promise.resolve({ alive: true, url: location.href });
+      if (message.kind === 'ping') return { alive: true, url: location.href };
       // El content script vive en un mundo aislado: este canal es la única forma
       // fiable de leer su estado desde el popup en Firefox y en Chrome.
-      if (message.kind === 'debug-extract') return Promise.resolve(this.inspect());
+      if (message.kind === 'debug-extract') return this.inspect();
       if (message.kind === 'partial' && message.summaries) this.applySummaries(message.summaries, false);
       if (message.kind === 'run-on-tab') void this.onPrimary();
       return undefined;
@@ -110,7 +112,11 @@ class LectorFluido {
       puntuación: Math.round(result.score),
       bloquesCandidatos: result.totalCandidates,
       palabrasArtículo: result.totalWords,
+      cobertura: `${Math.round(result.coverage * 100)} %`,
       motivoDegradación: result.degradeReason,
+      avisos: result.warnings,
+      // Anclaje sobre la página real, para saber qué bloque falla y por qué.
+      bloquesInseguros: verifyAnchoring(result.blocks).unsafe,
       bloquesFusionados: result.blocks.filter((b) => b.merged).length,
       bloqueMayor: palabras[0] ?? 0,
       top10PalabrasPorBloque: palabras.slice(0, 10),
@@ -179,9 +185,12 @@ class LectorFluido {
         fusionados: result.blocks.filter((b) => b.merged).length,
         umbral: config.minWords,
         palabrasArtículo: result.totalWords,
+        cobertura: `${Math.round(result.coverage * 100)} %`,
         motivoDegradación: result.degradeReason,
+        avisos: result.warnings,
         modoForzado: forceMode ?? '(auto)',
       });
+      if (result.unsafeBlocks.length) log.warn('bloques retirados por anclaje inseguro', result.unsafeBlocks);
 
       if (!result.container) {
         log.warn('sin contenedor de artículo: la puntuación no bastó para identificar contenido');
@@ -212,6 +221,10 @@ class LectorFluido {
       }
 
       this.currentRoot = root;
+      // Dudas que no impiden seguir: aviso no bloqueante con la salida a mano.
+      if (result.warnings.length && forceMode !== 'inplace' && config.extractionMode === 'auto') {
+        this.warnSoftDegradation(result);
+      }
       await this.summarize(result, config);
     } catch (error) {
       log.error('fallo en run()', error);
@@ -251,6 +264,13 @@ class LectorFluido {
       ],
       15_000,
     );
+  }
+
+  private warnSoftDegradation(result: ExtractionResult): void {
+    const message = result.warnings.includes('anchor-unsafe')
+      ? t('warnAnchorPartial', result.unsafeBlocks.length)
+      : t('warnLowScore');
+    showToast(this.theme, message, [{ label: t('degradeOpenReader'), onSelect: () => void this.run('reader') }], 12_000);
   }
 
   private async runInReader(result: ExtractionResult, config: Config): Promise<void> {
@@ -374,10 +394,10 @@ class LectorFluido {
 
   private applySummaries(summaries: BlockSummary[], final: boolean): void {
     const config = this.lastFormat;
-    for (const { id, summary } of summaries) {
+    for (const { id, summary, fallacies } of summaries) {
       const overlay = this.overlays.get(id);
       if (!overlay) continue;
-      overlay.setSummary(summary, config === 'bullets' ? 'bullets' : 'text');
+      overlay.setSummary(summary, config === 'bullets' ? 'bullets' : 'text', fallacies ?? []);
     }
     if (!final) {
       const done = [...this.overlays.values()].filter((o) => o.getState() === 'ready').length;
@@ -414,7 +434,9 @@ class LectorFluido {
       return;
     }
     const summary = response.summaries.find((s) => s.id === id);
-    if (summary) overlay.setSummary(summary.summary, config.summaryFormat === 'bullets' ? 'bullets' : 'text');
+    if (summary) {
+      overlay.setSummary(summary.summary, config.summaryFormat === 'bullets' ? 'bullets' : 'text', summary.fallacies ?? []);
+    }
     else overlay.setError(t('blockNoSummary'));
   }
 

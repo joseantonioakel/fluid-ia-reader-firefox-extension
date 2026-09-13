@@ -568,5 +568,29 @@
   },
   "keyHintOpenrouter": {
     "message": "Clé OpenRouter (ou utilisez le bouton Se connecter)"
+  },
+  "fallacyBadgeLabel": {
+    "message": "Sophisme : $1"
+  },
+  "fallacyTitle": {
+    "message": "Sophisme"
+  },
+  "fallacyQuoteLabel": {
+    "message": "Où"
+  },
+  "fallacyWhyLabel": {
+    "message": "Pourquoi"
+  },
+  "fallacyClose": {
+    "message": "Fermer"
+  },
+  "optDetectFallacies": {
+    "message": "**Détecter les sophismes** — signale par un badge ⚠ chaque bloc dont le texte original commet un sophisme ; au survol ou au clic, il indique lequel, où et pourquoi. Uniquement avec un fournisseur en ligne en mode « un appel par article » : l’IA locale ne le fait pas."
+  },
+  "warnAnchorPartial": {
+    "message": "$1 paragraphes impossibles à ancrer ont été ignorés. Si des résumés semblent mal placés, essayez le mode lecture."
+  },
+  "warnLowScore": {
+    "message": "L’article a été identifié avec peu de certitude. S’il manque des paragraphes ou s’il y en a trop, essayez le mode lecture."
   }
 }

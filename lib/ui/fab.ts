@@ -266,7 +266,7 @@ export class FloatingButton {
 
   setBusy(done: number, total: number): void {
     this.fab.dataset.busy = 'true';
-    this.iconEl.innerHTML = '';
+    this.iconEl.replaceChildren();
     const spin = document.createElement('span');
     spin.className = 'spin';
     spin.textContent = '◌';

@@ -568,5 +568,29 @@
   },
   "keyHintOpenrouter": {
     "message": "OpenRouter-Schlüssel (oder die Schaltfläche „Verbinden“ verwenden)"
+  },
+  "fallacyBadgeLabel": {
+    "message": "Logischer Fehlschluss: $1"
+  },
+  "fallacyTitle": {
+    "message": "Logischer Fehlschluss"
+  },
+  "fallacyQuoteLabel": {
+    "message": "Wo"
+  },
+  "fallacyWhyLabel": {
+    "message": "Warum"
+  },
+  "fallacyClose": {
+    "message": "Schließen"
+  },
+  "optDetectFallacies": {
+    "message": "**Logische Fehlschlüsse erkennen** — markiert jeden Block, dessen Originaltext einen Fehlschluss enthält, mit einem ⚠-Abzeichen; beim Überfahren oder Anklicken erscheint welcher, wo und warum. Nur mit Cloud-Anbietern im Modus „ein Aufruf pro Artikel“: die lokale KI kann das nicht."
+  },
+  "warnAnchorPartial": {
+    "message": "$1 Absätze, die sich nicht verankern ließen, wurden übersprungen. Wirken Zusammenfassungen verschoben, probieren Sie die Leseansicht."
+  },
+  "warnLowScore": {
+    "message": "Der Artikel wurde mit geringer Sicherheit erkannt. Fehlen Absätze oder sind zu viele da, probieren Sie die Leseansicht."
   }
 }

@@ -1,4 +1,4 @@
-import type { Config, ProviderId } from './types';
+import type { Config, Fallacy, ProviderId } from './types';
 import { PROMPT_VERSION } from './pipeline/prompts';
 
 /**
@@ -13,6 +13,8 @@ const STORE = 'summaries';
 export interface CacheEntry {
   key: string;
   summary: string;
+  /** Falacias detectadas junto con el resumen; ausente en entradas antiguas. */
+  fallacies?: Fallacy[];
   createdAt: number;
   lastAccessedAt: number;
   bytes: number;
@@ -91,6 +93,9 @@ export function configFingerprint(
     language,
     provider,
     model,
+    // Activar la detección debe regenerar: una entrada sin falacias no dice si
+    // no las hay o si nadie las buscó.
+    config.detectFallacies ? 'fallacies' : 'no-fallacies',
   ].join('|');
 }
 
@@ -102,26 +107,33 @@ export async function cacheKey(
   return sha256(`${normalizeUrl(url)}|${await sha256(blockText)}|${fingerprint}`);
 }
 
-export async function getCached(key: string): Promise<string | null> {
+export interface CachedSummary {
+  summary: string;
+  fallacies: Fallacy[];
+}
+
+export async function getCached(key: string): Promise<CachedSummary | null> {
   try {
     const entry = await tx<CacheEntry | undefined>('readonly', (store) => store.get(key));
     if (!entry) return null;
     // Refrescar el acceso para el LRU, sin bloquear la lectura.
     void tx('readwrite', (store) => store.put({ ...entry, lastAccessedAt: Date.now() }));
-    return entry.summary;
+    return { summary: entry.summary, fallacies: entry.fallacies ?? [] };
   } catch {
     return null;
   }
 }
 
-export async function putCached(key: string, summary: string): Promise<void> {
+export async function putCached(key: string, summary: string, fallacies: Fallacy[] = []): Promise<void> {
   try {
+    const serialized = JSON.stringify(fallacies);
     const entry: CacheEntry = {
       key,
       summary,
+      ...(fallacies.length ? { fallacies } : {}),
       createdAt: Date.now(),
       lastAccessedAt: Date.now(),
-      bytes: summary.length * 2 + key.length,
+      bytes: (summary.length + serialized.length) * 2 + key.length,
     };
     await tx('readwrite', (store) => store.put(entry));
   } catch {

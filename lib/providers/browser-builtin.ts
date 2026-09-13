@@ -66,6 +66,18 @@ interface ChromeSummarizerFactory {
   create(options: Record<string, unknown>): Promise<ChromeSummarizer>;
 }
 
+/**
+ * La Summarizer API de Chrome solo acepta unos pocos idiomas de salida y
+ * rechaza `create()` con los demás. Para esos se omite `outputLanguage`: el
+ * resumen sale en el idioma del texto, que es mejor que ningún resumen.
+ */
+const CHROME_OUTPUT_LANGUAGES = new Set(['en', 'es', 'ja']);
+
+export function chromeOutputLanguage(language: string): string | undefined {
+  const base = language.split('-')[0]?.toLowerCase() ?? '';
+  return CHROME_OUTPUT_LANGUAGES.has(base) ? base : undefined;
+}
+
 function getChromeSummarizer(): ChromeSummarizerFactory | null {
   const factory = (globalThis as unknown as { Summarizer?: ChromeSummarizerFactory }).Summarizer;
   return factory ?? null;
@@ -120,12 +132,13 @@ export const browserBuiltinProvider: SummarizerProvider = {
   async summarizeBlock(req: BlockRequest): Promise<string> {
     const chromeFactory = getChromeSummarizer();
     if (chromeFactory) {
+      const outputLanguage = chromeOutputLanguage(req.language);
       const summarizer = await chromeFactory.create({
         type: req.format === 'bullets' ? 'key-points' : 'tldr',
         format: req.format === 'bullets' ? 'markdown' : 'plain-text',
         length: req.block.targetWords <= 30 ? 'short' : 'medium',
         sharedContext: req.outline,
-        outputLanguage: req.language,
+        ...(outputLanguage ? { outputLanguage } : {}),
       });
       try {
         const text = await summarizer.summarize(req.block.text, { context: req.outline });

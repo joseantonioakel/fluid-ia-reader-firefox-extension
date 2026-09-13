@@ -20,7 +20,7 @@ un navegador ni ha hecho una sola llamada real a un proveedor de IA**.
 | | |
 |---|---|
 | Código | ~5.150 líneas de TypeScript en `lib/` y `entrypoints/` |
-| Pruebas | 132, en 12 ficheros, todas en verde |
+| Pruebas | 162, en 14 ficheros, todas en verde |
 | Typecheck | `tsc --noEmit` limpio, modo `strict` |
 | Builds | Firefox MV3 y Chrome MV3 correctos, ~107 kB |
 | Ejecución real | **Sin verificar** |
@@ -33,6 +33,9 @@ un navegador ni ha hecho una sola llamada real a un proveedor de IA**.
 |---|---|
 | Heurísticas de extracción | 20 pruebas unitarias + **4 comparando contra `@mozilla/readability`** sobre un artículo realista con navegación, sidebar, comentarios y pie |
 | Fusión de párrafos cortos | 22 pruebas: dónde **no** debe fusionar (encabezado, figura, contenedor distinto), el tope de 5 en la acumulación, y el rescate que une cada resto al vecino adyacente con menos palabras |
+| Degradación al Modo B | 6 pruebas: bloque invisible retirado con ids contiguos, par solapado, más de un tercio inseguro, ancestro sticky ya no degrada, puntuación baja con evidencia buena da aviso y no bloqueo, cobertura |
+| Detección de falacias | 4 pruebas del prompt y los esquemas, 5 del parseo (`coerceFallacies`), 1 de la huella de caché y 8 del overlay: emblemas, popover por hover, fijado por clic, Escape, cierre al ocultar |
+| Mensajería compatible con Chrome | 6 pruebas que simulan el comportamiento estricto de Chrome (`sendResponse` + `true`), incluidos errores y mensajes ajenos |
 | Internacionalización | 10 pruebas: los cuatro catálogos tienen las mismas claves y los mismos marcadores `$n`, sustitución de `t()`, marcado ligero sin innerHTML y relleno de páginas por `data-i18n` |
 | Encaje del overlay | 10 pruebas sobre el factor de interlineado, el relleno derivado del párrafo y el host fuera de flujo. **El ajuste de cuerpo real no se puede probar en jsdom** (no calcula layout) |
 | Reglas de longitud y descarte | 11 pruebas sobre `clamp(15,100)` y el corte del 60 % |
@@ -59,11 +62,15 @@ Esto es lo que hay que atacar primero. Nada de lo siguiente se ha ejecutado nunc
    de cuerpo** que reduce el texto hasta que cabe (depende de `scrollHeight`, imposible en jsdom).
    Tampoco la pestaña lateral: su plegado por hover y la apertura del menú hacia abajo cerca del
    borde superior.
-7. **La interfaz en otro idioma.** Los catálogos en, fr y de existen y son consistentes, pero no se ha
+7. **La calidad de la detección de falacias.** El prompt pide listón alto, pero no se ha medido ni la
+   precisión ni si la cita literal coincide con el original. Ningún emblema se ha visto en pantalla.
+8. **La interfaz en otro idioma.** Los catálogos en, fr y de existen y son consistentes, pero no se ha
    abierto la extensión con el navegador en esos idiomas. Las traducciones las hizo el asistente sin
    revisión nativa.
 5. **La inyección del content script.** Se corrigió un bug que la impedía (ver más abajo), pero la
    corrección **no está confirmada en navegador**.
+   Tampoco se ha ejecutado en Chrome: la mensajería se reescribió para que funcione ahí (D15), pero
+   solo está probada con una simulación del comportamiento de Chrome.
 6. **El extractor sobre páginas reales.** Solo se ha probado contra fixtures sintéticos. El PRD pide
    una suite de 20 páginas reales que no existe todavía.
 
@@ -103,14 +110,23 @@ Ninguno está hecho. En orden de valor:
 - **Calidad de `distilbart` en Firefox**: es un modelo entrenado en inglés; si devuelve resúmenes en
   inglés sobre texto en español, la IA local deja de ser aceptable como default en Firefox y hay que
   degradar a `gemini-free`.
-- **Umbrales de degradación al Modo B**: los valores actuales (puntuación < 20, < 2 bloques con > 500
-  palabras) están puestos por criterio, no medidos.
+- **Umbrales de degradación al Modo B**: los valores de `DEGRADE` (puntuación < 20 con menos de 3
+  bloques o cobertura < 50 %; cobertura < 40 % con más de 500 palabras; más de un tercio de bloques
+  inseguros) están puestos por criterio, no medidos.
 
 ### 4. Antes de publicar
 
-Nada de la Fase 5 está hecho: política de privacidad, recursos de store, capturas, onboarding.
-El manifiesto de Firefox ya declara `data_collection_permissions`, obligatorio en AMO desde el
-3-11-2025.
+De la Fase 5 está hecho lo que no necesita ejecutar la extensión:
+
+- Política de privacidad bilingüe (`PRIVACY.md`), textos de la ficha y notas para el revisor
+  (`docs/amo/LISTING.md`), instrucciones de compilación (`docs/amo/BUILD.md`), licencia MIT y
+  metadatos en `package.json`.
+- `npm run zip` genera el paquete y el zip de fuentes; `addons-linter` lo valida sin errores ni
+  avisos. `strict_min_version` subió a **140** (142 en Android) porque `data_collection_permissions`
+  no existe antes.
+
+Falta lo que sí necesita verla funcionar: **capturas de pantalla** (AMO exige al menos una) y un
+**icono definitivo** en lugar del marcador de `public/icon/`. Y el onboarding.
 
 ---
 
@@ -158,5 +174,9 @@ Quedan aquí porque son fallos de los que no protege el compilador y conviene no
 | 2026-08-10 | Logging y diagnóstico. Se encuentra y corrige el bug del `tabId`. 68 pruebas |
 | 2026-08-10 | Fondo con 10 % de celeste, tipografía contraria, fusión de párrafos cortos. 97 pruebas |
 | 2026-08-12 | Documentación de continuidad (este documento, `DECISIONES.md`, PRD v1.3) |
+| 2026-09-13 | Degradación al Modo B por evidencia (D17): anclaje por bloque, sin regla sticky/fixed, umbrales por cobertura, informe de bloques inseguros en log y diagnóstico, aviso no bloqueante. 162 pruebas |
+| 2026-09-13 | Detección de falacias lógicas por bloque (D16): el modelo las devuelve en el JSON batch, se cachean, y el overlay muestra emblemas ⚠ con popover (nombre, cita literal, por qué). Opción para desactivarla. 156 pruebas |
+| 2026-09-12 | Compatibilidad real con Chrome/Chromium: listeners de mensajes vía `sendResponse` (antes devolvían promesas, que Chrome ignora), keepalive del service worker, idioma de salida acotado en la Summarizer API. 138 pruebas |
+| 2026-09-12 | Preparación para AMO: política de privacidad, ficha, instrucciones de compilación, metadatos, `addons-linter` limpio, mínimo Firefox 140. Repositorio publicado en GitHub |
 | 2026-09-12 | Internacionalización con `browser.i18n`: 190 claves en es, en, fr y de; manifiesto, popup, opciones, content script y mensajes de error del background. 132 pruebas |
 | 2026-09-03 | Encaje del overlay (cuerpo que se reduce hasta caber, host fuera de flujo, relleno del párrafo), pestaña lateral compacta en el borde derecho, fusión en dos fases: acumulación de 2–5 párrafos y rescate de restos hacia el vecino más pequeño, para que ningún párrafo quede sin resumir. 116 pruebas |

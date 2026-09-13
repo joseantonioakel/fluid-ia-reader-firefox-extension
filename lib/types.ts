@@ -39,6 +39,8 @@ export interface Config {
   maxCacheMb: number;
   /** Detalle de depuración en la consola. Activo por defecto en desarrollo. */
   debugLogging: boolean;
+  /** Pedir al modelo que señale falacias lógicas en el texto original de cada bloque. */
+  detectFallacies: boolean;
 }
 
 export const SUMMARY_MIN_WORDS = 15;
@@ -62,9 +64,21 @@ export interface ArticlePayload {
   lang: string;
 }
 
+/** Falacia lógica detectada en el texto ORIGINAL de un bloque. */
+export interface Fallacy {
+  /** Nombre de la falacia, en el idioma del resumen. */
+  name: string;
+  /** Fragmento literal del bloque donde se incurre en ella. */
+  quote: string;
+  /** Por qué el razonamiento falla. */
+  explanation: string;
+}
+
 export interface BlockSummary {
   id: number;
   summary: string;
+  /** Ausente o vacío cuando no se detectó ninguna, o cuando el proveedor no las busca. */
+  fallacies?: Fallacy[];
 }
 
 export interface SummarizeOk {

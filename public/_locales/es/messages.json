@@ -568,5 +568,29 @@
   },
   "keyHintOpenrouter": {
     "message": "Clave de OpenRouter (o usa el botón Conectar)"
+  },
+  "fallacyBadgeLabel": {
+    "message": "Falacia lógica: $1"
+  },
+  "fallacyTitle": {
+    "message": "Falacia lógica"
+  },
+  "fallacyQuoteLabel": {
+    "message": "Dónde"
+  },
+  "fallacyWhyLabel": {
+    "message": "Por qué"
+  },
+  "fallacyClose": {
+    "message": "Cerrar"
+  },
+  "optDetectFallacies": {
+    "message": "**Detectar falacias lógicas** — marca con un emblema ⚠ cada bloque cuyo texto original incurre en una falacia; al pasar el ratón o clicar se muestra cuál es, dónde y por qué. Solo con proveedores en la nube en modo «una llamada por artículo»: la IA local no lo hace."
+  },
+  "warnAnchorPartial": {
+    "message": "Se han omitido $1 párrafos que no se podían anclar. Si ves resúmenes descolocados, prueba la vista de lectura."
+  },
+  "warnLowScore": {
+    "message": "El artículo se identificó con dudas. Si faltan o sobran párrafos, prueba la vista de lectura."
   }
 }

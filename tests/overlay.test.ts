@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { BASE_SCALE, BlockOverlay, lineHeightRatio, overlayPadding } from '../lib/ui/overlay';
 import type { Theme } from '../lib/ui/theme';
 
@@ -100,5 +100,106 @@ describe('BlockOverlay', () => {
     overlay.destroy();
     expect(p.querySelector('[data-lector-fluido]')).toBeNull();
     expect(p.getAttribute('style')).toBeNull();
+  });
+});
+
+describe('BlockOverlay · falacias', () => {
+  const fallacy = {
+    name: 'Falso dilema',
+    quote: 'O estás con nosotros o contra nosotros.',
+    explanation: 'Presenta solo dos opciones cuando existen más.',
+  };
+
+  /** El Shadow DOM es cerrado: para inspeccionarlo, la prueba lo abre al crearlo. */
+  let shadow: ShadowRoot;
+  beforeEach(() => {
+    const original = Element.prototype.attachShadow;
+    vi.spyOn(Element.prototype, 'attachShadow').mockImplementation(function (this: Element) {
+      shadow = original.call(this, { mode: 'open' });
+      return shadow;
+    });
+  });
+
+  function overlayWith(fallacies = [fallacy]): BlockOverlay {
+    const p = document.createElement('p');
+    p.textContent = 'Texto.';
+    document.body.appendChild(p);
+    const overlay = new BlockOverlay(0, [p], theme, { onRetry: () => undefined });
+    overlay.setSummary('Resumen.', 'text', fallacies);
+    return overlay;
+  }
+
+  it('pinta un emblema por falacia, con el nombre accesible', () => {
+    overlayWith([fallacy, { ...fallacy, name: 'Ad hominem' }]);
+    const badges = shadow.querySelectorAll('.badge');
+    expect(badges).toHaveLength(2);
+    expect(badges[0]!.getAttribute('aria-label')).toBe('Falacia lógica: Falso dilema');
+    expect(badges[1]!.getAttribute('title')).toBe('Ad hominem');
+  });
+
+  it('sin falacias no hay emblemas', () => {
+    overlayWith([]);
+    expect(shadow.querySelectorAll('.badge')).toHaveLength(0);
+  });
+
+  it('al pasar el ratón muestra el popover con nombre, cita y explicación', () => {
+    const overlay = overlayWith();
+    shadow.querySelector('.badge')!.dispatchEvent(new Event('mouseenter'));
+    const pop = shadow.querySelector('.pop')!;
+    expect(overlay.isPopoverOpen()).toBe(true);
+    expect(pop.querySelector('h4')!.textContent).toContain('Falso dilema');
+    expect(pop.querySelector('blockquote')!.textContent).toContain('O estás con nosotros o contra nosotros.');
+    expect(pop.textContent).toContain('Presenta solo dos opciones cuando existen más.');
+    expect(shadow.querySelector('.badge')!.getAttribute('aria-expanded')).toBe('true');
+  });
+
+  it('al salir del emblema el popover se cierra tras un pequeño margen', () => {
+    vi.useFakeTimers();
+    const overlay = overlayWith();
+    const badge = shadow.querySelector('.badge')!;
+    badge.dispatchEvent(new Event('mouseenter'));
+    badge.dispatchEvent(new Event('mouseleave'));
+    expect(overlay.isPopoverOpen()).toBe(true);
+    vi.advanceTimersByTime(200);
+    expect(overlay.isPopoverOpen()).toBe(false);
+    vi.useRealTimers();
+  });
+
+  it('un clic fija el popover: sobrevive al mouseleave y se cierra con otro clic', () => {
+    vi.useFakeTimers();
+    const overlay = overlayWith();
+    const badge = shadow.querySelector('.badge')!;
+    badge.dispatchEvent(new MouseEvent('click'));
+    badge.dispatchEvent(new Event('mouseleave'));
+    vi.advanceTimersByTime(500);
+    expect(overlay.isPopoverOpen()).toBe(true);
+    badge.dispatchEvent(new MouseEvent('click'));
+    expect(overlay.isPopoverOpen()).toBe(false);
+    vi.useRealTimers();
+  });
+
+  it('Escape cierra el popover', () => {
+    const overlay = overlayWith();
+    shadow.querySelector('.badge')!.dispatchEvent(new Event('mouseenter'));
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    expect(overlay.isPopoverOpen()).toBe(false);
+  });
+
+  it('ocultar el overlay o reintentar el bloque cierra el popover y retira los emblemas', () => {
+    const overlay = overlayWith();
+    shadow.querySelector('.badge')!.dispatchEvent(new Event('mouseenter'));
+    overlay.setHidden(true);
+    expect(overlay.isPopoverOpen()).toBe(false);
+    overlay.setHidden(false);
+    overlay.setLoading();
+    expect(shadow.querySelectorAll('.badge')).toHaveLength(0);
+  });
+
+  it('el popover es hermano de la caja, no hijo: la caja recorta y el popover debe sobresalir', () => {
+    overlayWith();
+    shadow.querySelector('.badge')!.dispatchEvent(new Event('mouseenter'));
+    const pop = shadow.querySelector('.pop')!;
+    expect(pop.parentNode).toBe(shadow);
+    expect(shadow.querySelector('.box')!.contains(pop)).toBe(false);
   });
 });

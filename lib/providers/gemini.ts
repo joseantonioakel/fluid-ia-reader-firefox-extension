@@ -98,7 +98,7 @@ function makeGeminiProvider(id: ProviderId, displayName: string, free: boolean):
 
     async summarizeBatch(req: BatchRequest): Promise<BatchResponse> {
       if (!req.apiKey) throw new ProviderError(t('errMissingKey', 'Google AI Studio'), 'no-provider', false);
-      const prompt = buildBatchPrompt(req.article, req.blocks, req.format, req.language, req.includeTldr);
+      const prompt = buildBatchPrompt(req.article, req.blocks, req.format, req.language, req.includeTldr, req.detectFallacies);
       const raw = await callGemini(req.apiKey, req.model, prompt, req.signal, true, 32_000);
       return coerceBatchResponse(parseJsonLoose(raw));
     },

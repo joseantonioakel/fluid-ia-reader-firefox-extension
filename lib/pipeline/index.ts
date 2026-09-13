@@ -118,7 +118,7 @@ export async function summarizeArticle(
     const key = await cacheKey(article.url, block.text, fingerprint);
     keyByBlock.set(block.id, key);
     const hit = await getCached(key);
-    if (hit) cached.push({ id: block.id, summary: hit });
+    if (hit) cached.push({ id: block.id, summary: hit.summary, ...(hit.fallacies.length ? { fallacies: hit.fallacies } : {}) });
     else pending.push(block);
   }
 
@@ -175,7 +175,7 @@ export async function summarizeArticle(
         }
         kept.push(summary);
         const key = keyByBlock.get(summary.id);
-        if (key) void putCached(key, summary.summary);
+        if (key) void putCached(key, summary.summary, summary.fallacies ?? []);
       }
       if (inventados.length) log.warn('el modelo devolvió ids inexistentes', inventados);
       if (pocaCompresión.length) log.info('descartados por compresión insuficiente', pocaCompresión);
@@ -315,6 +315,9 @@ async function runBatch(
             format: config.summaryFormat,
             language,
             includeTldr,
+            // La detección de falacias solo existe en batch: el prompt per-block
+            // devuelve texto plano y la IA local no razona sobre argumentos.
+            detectFallacies: config.detectFallacies,
             apiKey: attempt.apiKey,
             model: attempt.model,
             signal: deps.signal,

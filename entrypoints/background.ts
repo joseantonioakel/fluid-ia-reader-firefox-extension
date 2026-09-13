@@ -3,6 +3,7 @@ import { cacheStats, clearCache, pruneCache } from '../lib/cache';
 import { getConfig, getSecret, resolveLanguage, setConfig, setSecret } from '../lib/config';
 import { t, uiLanguage } from '../lib/i18n';
 import { createLogger, initLogging, newRunId } from '../lib/log';
+import { keepAliveWhile, onMessage } from '../lib/messaging';
 import { runOpenRouterOAuth } from '../lib/oauth';
 import { injectIntoTab, listRegisteredScripts, originPatternFor, syncContentScripts } from '../lib/origins';
 import { summarizeArticle } from '../lib/pipeline';
@@ -54,7 +55,9 @@ export default defineBackground(() => {
     if (tab.id != null) await browser.tabs.sendMessage(tab.id, { kind: 'run-on-tab' }).catch(() => undefined);
   });
 
-  browser.runtime.onMessage.addListener((message: Message, sender) => {
+  // onMessage (lib/messaging) responde vía sendResponse: devolver una promesa
+  // directamente al listener solo funciona en Firefox, no en Chrome.
+  onMessage<Message>((message, sender) => {
     log.debug('← mensaje', message.kind, { desdePestaña: sender.tab?.id ?? '(popup/opciones)' });
     switch (message.kind) {
       case 'diagnose':
@@ -201,6 +204,9 @@ export default defineBackground(() => {
     }
     const controller = new AbortController();
     if (tabId != null) running.set(tabId, controller);
+    // Chrome mata el service worker a los 30 s de inactividad; una llamada al
+    // proveedor puede tardar más. Mientras haya trabajo, se mantiene despierto.
+    keepAliveWhile(() => running.size > 0);
 
     const language = resolveLanguage(config, article.lang ? [article.lang] : [], browser.i18n.getUILanguage());
 

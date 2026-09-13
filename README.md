@@ -29,7 +29,7 @@ npm run build        # .output/firefox-mv3
 npm run build:chrome # .output/chrome-mv3
 npm run build:all
 
-npm test             # 132 pruebas
+npm test             # 162 pruebas
 npm run compile      # typecheck sin emitir
 ```
 
@@ -37,7 +37,8 @@ npm run compile      # typecheck sin emitir
 
 - **Firefox**: `about:debugging` → *Este Firefox* → *Cargar complemento temporal* → elegir
   `.output/firefox-mv3/manifest.json`.
-- **Chrome**: `chrome://extensions` → *Modo desarrollador* → *Cargar descomprimida* → `.output/chrome-mv3`.
+- **Chrome y Chromium** (Brave, Edge, Vivaldi…): `chrome://extensions` → *Modo desarrollador* →
+  *Cargar descomprimida* → `.output/chrome-mv3`. Para empaquetar: `npm run zip:chrome`.
 
 ---
 
@@ -58,6 +59,9 @@ El idioma de los **resúmenes** es independiente y se elige en Opciones.
    palabras: ningún párrafo del artículo se queda sin resumir. El overlay ocupa la caja del
    párrafo y **reduce el cuerpo del texto lo justo para que el resumen quepa**; solo si ni con el
    mínimo legible cabe, la caja pasa a tener scroll.
+   - **⚠** aparece cuando el texto original del bloque incurre en una **falacia lógica**. Al pasar el
+     ratón o clicar muestra cuál es, el fragmento exacto y por qué. Solo con proveedores en la nube en
+     modo batch; se desactiva en Opciones.
    - **👁** alterna entre resumen y texto original, bloque a bloque.
    - **Segundo clic** en la pestaña (o `Esc`) alterna todos a la vez.
    - **⋮** (o clic derecho en la pestaña) abre el menú: TL;DR global, regenerar, vista de lectura,
@@ -205,6 +209,13 @@ proveedor de respaldo. Solo al agotarla se muestra error, y siempre por bloque.
 
 ---
 
+## Publicación y privacidad
+
+- Política de privacidad: [`PRIVACY.md`](PRIVACY.md) (español e inglés).
+- Textos y datos de la ficha de addons.mozilla.org: [`docs/amo/LISTING.md`](docs/amo/LISTING.md).
+- Instrucciones de compilación para los revisores de AMO: [`docs/amo/BUILD.md`](docs/amo/BUILD.md).
+- Paquete y código fuente para el envío: `npm run zip` genera ambos en `.output/`.
+
 ## Estructura
 
 ```
@@ -220,14 +231,14 @@ lib/
   pipeline/            estrategias batch/per-block, prompts, planificador
   ui/                  overlay, botón flotante, avisos, tema
   cache.ts config.ts origins.ts oauth.ts words.ts types.ts
-tests/                 132 pruebas, incluida la comparación contra Readability
+tests/                 162 pruebas, incluida la comparación contra Readability
 ```
 
 ---
 
 ## Estado
 
-Implementado y verificado: builds de Firefox y Chrome, typecheck limpio y 132 pruebas en verde.
+Implementado y verificado: builds de Firefox y Chrome, typecheck limpio y 162 pruebas en verde.
 
 Pendiente de validación **con tráfico real**, que exige credenciales y navegador:
 

@@ -1,4 +1,5 @@
 import { t } from '../i18n';
+import type { Fallacy } from '../types';
 import { contrastingStack } from './fonts';
 import type { Theme } from './theme';
 
@@ -59,6 +60,48 @@ const OVERLAY_CSS = `
   letter-spacing: 0.04em;
   margin-right: 2px;
 }
+/* Emblemas de falacia: uno por falacia, delante de la etiqueta. */
+.badges { display: inline-flex; gap: 3px; }
+.badges:empty { display: none; }
+.badge {
+  font: inherit;
+  font-size: 11px;
+  line-height: 1;
+  padding: 1px 4px;
+  border-radius: 4px;
+  border: 1px solid var(--lf-warn);
+  color: var(--lf-warn);
+  background: transparent;
+  cursor: help;
+}
+.badge:hover, .badge[aria-expanded="true"] { background: var(--lf-warn-bg); }
+.badge:focus-visible { outline: 2px solid var(--lf-warn); outline-offset: 1px; }
+/* El popover es hermano de .box (que recorta con overflow) y cuelga del host,
+   así que puede sobresalir de la caja del párrafo. */
+.pop {
+  position: absolute;
+  z-index: 2147483001;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: min(380px, 100%);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--lf-border);
+  background: var(--lf-bg);
+  color: var(--lf-fg);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.22);
+  font: 13px/1.45 system-ui, -apple-system, sans-serif;
+  text-align: left;
+  direction: ltr;
+  hyphens: none;
+}
+.pop h4 { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+.pop h4 .kind { font-weight: 500; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--lf-muted); }
+.pop h4 button { margin-left: auto; }
+.pop dl { margin: 0; }
+.pop dt { margin-top: 6px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--lf-muted); }
+.pop dd { margin: 2px 0 0; }
+.pop blockquote { margin: 0; padding-left: 8px; border-left: 2px solid var(--lf-warn); font-style: italic; }
 button {
   font: inherit;
   line-height: 1;
@@ -154,10 +197,17 @@ export class BlockOverlay {
   private state: OverlayState = 'loading';
   private scale = BASE_SCALE;
   private resizeObserver: ResizeObserver | null = null;
+  private theme: Theme;
+  private badgesEl!: HTMLElement;
+  private popEl: HTMLElement | null = null;
+  private popFor: Fallacy | null = null;
+  private pinned = false;
+  private closeTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(id: number, elements: HTMLElement[], theme: Theme, private callbacks: OverlayCallbacks) {
     this.id = id;
     this.elements = elements;
+    this.theme = theme;
     const anchor = elements[0]!;
     this.block = anchor;
 
@@ -190,15 +240,7 @@ export class BlockOverlay {
     this.box.className = 'box';
     this.box.setAttribute('role', 'region');
     this.box.setAttribute('aria-label', t('overlayRegion'));
-    // Fondo de la página teñido con un 10 % de celeste: opaco, para tapar el
-    // texto original, pero reconocible como "esto lo ha puesto la extensión".
-    this.box.style.setProperty('--lf-bg', theme.overlayBg);
-    this.box.style.setProperty('--lf-fg', theme.fg);
-    this.box.style.setProperty('--lf-border', theme.border);
-    this.box.style.setProperty('--lf-hover', theme.hover);
-    this.box.style.setProperty('--lf-accent', theme.accent);
-    this.box.style.setProperty('--lf-muted', theme.dark ? '#9aa2b1' : '#6b7280');
-    this.box.style.setProperty('--lf-error', theme.dark ? '#ff8f8f' : '#b42318');
+    this.applyThemeVars(this.box);
     // Tipografía del tipo contrario a la del original, partiendo del mismo cuerpo.
     this.box.style.setProperty('--lf-font', contrastingStack(computed.fontFamily));
     this.box.style.setProperty('--lf-size', computed.fontSize || '16px');
@@ -211,6 +253,9 @@ export class BlockOverlay {
 
     const head = document.createElement('div');
     head.className = 'head';
+
+    this.badgesEl = document.createElement('span');
+    this.badgesEl.className = 'badges';
 
     this.tagEl = document.createElement('span');
     this.tagEl.className = 'tag';
@@ -236,7 +281,7 @@ export class BlockOverlay {
       this.toggle();
     });
 
-    head.append(this.tagEl, this.retryBtn, this.eyeBtn);
+    head.append(this.badgesEl, this.tagEl, this.retryBtn, this.eyeBtn);
 
     this.bodyEl = document.createElement('div');
     this.bodyEl.className = 'body';
@@ -244,6 +289,26 @@ export class BlockOverlay {
 
     this.box.append(head, this.bodyEl);
     this.shadow.append(style, this.box);
+  }
+
+  /**
+   * Variables de tema. Van en cada raíz visual (caja y popover) porque el host
+   * lleva `all: initial` y no conviene depender de la herencia a través de él.
+   */
+  private applyThemeVars(element: HTMLElement): void {
+    const theme = this.theme;
+    // Fondo de la página teñido con un 10 % de celeste: opaco, para tapar el
+    // texto original, pero reconocible como "esto lo ha puesto la extensión".
+    element.style.setProperty('--lf-bg', theme.overlayBg);
+    element.style.setProperty('--lf-fg', theme.fg);
+    element.style.setProperty('--lf-border', theme.border);
+    element.style.setProperty('--lf-hover', theme.hover);
+    element.style.setProperty('--lf-accent', theme.accent);
+    element.style.setProperty('--lf-muted', theme.dark ? '#9aa2b1' : '#6b7280');
+    element.style.setProperty('--lf-error', theme.dark ? '#ff8f8f' : '#b42318');
+    // Ámbar para las falacias: distinto del acento (información) y del error.
+    element.style.setProperty('--lf-warn', theme.dark ? '#f5b24a' : '#b45309');
+    element.style.setProperty('--lf-warn-bg', theme.dark ? 'rgba(245,178,74,0.18)' : 'rgba(180,83,9,0.12)');
   }
 
   /**
@@ -352,10 +417,11 @@ export class BlockOverlay {
     this.bodyEl.replaceChildren(wrap);
   }
 
-  setSummary(summary: string, format: 'bullets' | 'text'): void {
+  setSummary(summary: string, format: 'bullets' | 'text', fallacies: Fallacy[] = []): void {
     this.state = 'ready';
     this.retryBtn.hidden = true;
     this.tagEl.textContent = t('overlayTagSummary');
+    this.setFallacies(fallacies);
     if (format === 'bullets') {
       const ul = document.createElement('ul');
       for (const line of summary.split('\n')) {
@@ -374,6 +440,7 @@ export class BlockOverlay {
 
   setError(message: string): void {
     this.state = 'error';
+    this.setFallacies([]);
     this.tagEl.textContent = t('overlayTagError');
     this.retryBtn.hidden = false;
     const p = document.createElement('div');
@@ -385,10 +452,147 @@ export class BlockOverlay {
 
   setLoading(): void {
     this.state = 'loading';
+    this.setFallacies([]);
     this.tagEl.textContent = t('overlayTagSummary');
     this.retryBtn.hidden = true;
     this.setSkeleton();
     this.fit();
+  }
+
+  /* ------------------------------ Falacias ------------------------------ */
+
+  /** Un emblema por falacia. Al pasar el ratón, enfocar o clicar se abre el detalle. */
+  setFallacies(fallacies: Fallacy[]): void {
+    this.closePopover();
+    this.badgesEl.replaceChildren(...fallacies.map((fallacy) => this.badge(fallacy)));
+  }
+
+  getFallacies(): Fallacy[] {
+    return Array.from(this.badgesEl.children, (el) => (el as HTMLElement & { fallacy: Fallacy }).fallacy);
+  }
+
+  private badge(fallacy: Fallacy): HTMLButtonElement {
+    const btn = document.createElement('button') as HTMLButtonElement & { fallacy: Fallacy };
+    btn.className = 'badge';
+    btn.type = 'button';
+    btn.textContent = '⚠';
+    btn.title = fallacy.name;
+    btn.setAttribute('aria-label', t('fallacyBadgeLabel', fallacy.name));
+    btn.setAttribute('aria-expanded', 'false');
+    btn.fallacy = fallacy;
+    btn.addEventListener('mouseenter', () => this.openPopover(fallacy, btn, false));
+    btn.addEventListener('focus', () => this.openPopover(fallacy, btn, false));
+    btn.addEventListener('mouseleave', () => this.scheduleClose());
+    btn.addEventListener('blur', () => this.scheduleClose());
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Clic: fija el popover para poder leerlo con calma; otro clic lo cierra.
+      if (this.pinned && this.popFor === fallacy) this.closePopover();
+      else this.openPopover(fallacy, btn, true);
+    });
+    return btn;
+  }
+
+  private openPopover(fallacy: Fallacy, anchor: HTMLElement, pin: boolean): void {
+    this.cancelClose();
+    if (this.popFor === fallacy && this.popEl) {
+      if (pin) this.pinned = true;
+      return;
+    }
+    // Un popover fijado no se sustituye por uno de hover; sí por otro clic.
+    if (this.pinned && !pin) return;
+    this.closePopover();
+
+    const pop = document.createElement('div');
+    pop.className = 'pop';
+    pop.setAttribute('role', 'dialog');
+    pop.setAttribute('aria-label', t('fallacyTitle'));
+    this.applyThemeVars(pop);
+
+    const h4 = document.createElement('h4');
+    const kind = document.createElement('span');
+    kind.className = 'kind';
+    kind.textContent = t('fallacyTitle');
+    const name = document.createElement('span');
+    name.textContent = `⚠ ${fallacy.name}`;
+    const close = document.createElement('button');
+    close.type = 'button';
+    close.textContent = '✕';
+    close.title = t('fallacyClose');
+    close.setAttribute('aria-label', t('fallacyClose'));
+    close.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.closePopover();
+    });
+    h4.append(kind, name, close);
+
+    const dl = document.createElement('dl');
+    if (fallacy.quote) {
+      const dt = document.createElement('dt');
+      dt.textContent = t('fallacyQuoteLabel');
+      const dd = document.createElement('dd');
+      const quote = document.createElement('blockquote');
+      quote.textContent = `“${fallacy.quote}”`;
+      dd.appendChild(quote);
+      dl.append(dt, dd);
+    }
+    const dtWhy = document.createElement('dt');
+    dtWhy.textContent = t('fallacyWhyLabel');
+    const ddWhy = document.createElement('dd');
+    ddWhy.textContent = fallacy.explanation;
+    dl.append(dtWhy, ddWhy);
+
+    pop.append(h4, dl);
+    pop.addEventListener('mouseenter', () => this.cancelClose());
+    pop.addEventListener('mouseleave', () => this.scheduleClose());
+    pop.addEventListener('click', (e) => e.stopPropagation());
+
+    // Posición bajo el emblema, alineado a su borde derecho, en coordenadas del host.
+    const host = this.host.getBoundingClientRect();
+    const rect = anchor.getBoundingClientRect();
+    pop.style.top = `${rect.bottom - host.top + 4}px`;
+    pop.style.right = `${Math.max(0, host.right - rect.right)}px`;
+
+    this.shadow.appendChild(pop);
+    this.popEl = pop;
+    this.popFor = fallacy;
+    this.pinned = pin;
+    anchor.setAttribute('aria-expanded', 'true');
+    document.addEventListener('keydown', this.onKeydown);
+    if (pin) setTimeout(() => document.addEventListener('click', this.onDocumentClick, { once: true }), 0);
+  }
+
+  private scheduleClose(): void {
+    if (this.pinned) return;
+    this.cancelClose();
+    // Pequeño margen para poder pasar del emblema al popover sin que se cierre.
+    this.closeTimer = setTimeout(() => this.closePopover(), 150);
+  }
+
+  private cancelClose(): void {
+    if (this.closeTimer !== null) clearTimeout(this.closeTimer);
+    this.closeTimer = null;
+  }
+
+  private onKeydown = (e: KeyboardEvent): void => {
+    if (e.key === 'Escape') this.closePopover();
+  };
+
+  private onDocumentClick = (): void => this.closePopover();
+
+  closePopover(): void {
+    this.cancelClose();
+    this.popEl?.remove();
+    this.popEl = null;
+    this.popFor = null;
+    this.pinned = false;
+    for (const badge of this.badgesEl.children) badge.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('keydown', this.onKeydown);
+    document.removeEventListener('click', this.onDocumentClick);
+  }
+
+  isPopoverOpen(): boolean {
+    return this.popEl !== null;
   }
 
   /** Marca visual cuando el resumen vino del proveedor de respaldo. */
@@ -406,6 +610,7 @@ export class BlockOverlay {
     this.box.style.display = hidden ? 'none' : '';
     this.eyeBtn.setAttribute('aria-pressed', String(hidden));
     this.applyHostStyle();
+    this.closePopover();
     if (hidden) {
       // Cuando el overlay se oculta, el botón debe seguir accesible para restaurarlo.
       this.shadow.appendChild(this.floatingEye());
@@ -454,6 +659,7 @@ export class BlockOverlay {
   }
 
   destroy(): void {
+    this.closePopover();
     this.resizeObserver?.disconnect();
     this.resizeObserver = null;
     this.host.remove();

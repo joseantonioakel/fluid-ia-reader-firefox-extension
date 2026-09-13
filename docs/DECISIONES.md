@@ -207,6 +207,80 @@ e interlineado se pasan explícitamente por variables CSS.
 
 ---
 
+## D17 — Degradación al Modo B por evidencia, no por sospecha
+
+La vista de lectura se ofrecía demasiado: saltaba en páginas donde la agrupación de párrafos funcionaba
+bien. Las tres reglas se rehicieron con un principio: **la puntuación del contenedor es un indicio;
+los bloques encontrados y la cobertura (palabras de los bloques entre palabras del contenedor) son la
+evidencia.** Solo se bloquea cuando la evidencia también es mala. Umbrales en `DEGRADE`
+(`lib/extract/blocks.ts`), puestos por criterio y pendientes de medir.
+
+- **Anclaje por bloque, no por página.** Antes, un solo párrafo con caja 0 (un acordeón cerrado, una
+  pestaña oculta, un "leer más" plegado: pasan la comprobación de visibilidad porque el `display:
+  none` está en un ancestro) degradaba la página entera. Ahora se retira solo ese bloque, y de un par
+  solapado solo el segundo. Los ids se reasignan para que sigan contiguos. Solo si más de un tercio
+  de los bloques es inseguro se propone la vista de lectura; si no, se sigue in-place con un aviso.
+- **La regla de ancestros `fixed` o `sticky` desaparece.** No protegía de nada: el overlay se
+  posiciona en absoluto dentro del propio párrafo y se mueve con él. Y las columnas pegajosas son
+  habituales; era la fuente más probable de falsas alarmas.
+- **`low-score` solo bloquea con evidencia débil**: menos de 3 bloques o cobertura menor del 50 %.
+  Con puntuación baja pero bloques de sobra, se sigue in-place con aviso.
+- **`too-few-blocks` se mide por cobertura**: más de 500 palabras y menos de 2 bloques o cobertura
+  menor del 40 %. Es la medida real de "el extractor se está perdiendo el artículo".
+- **Se registra qué bloque falla y por qué** (`unsafeBlocks`, con ancla, motivo y palabras) en el log
+  de extracción y en el diagnóstico del popup. Antes la verificación devolvía un booleano y no había
+  forma de saber cuál de las reglas había saltado en una página concreta.
+- **Aviso no bloqueante** (`warnings`) en vez de la pregunta previa cuando hay dudas pero se puede
+  seguir: se resume y un toast de 12 s ofrece la vista de lectura. La pregunta bloqueante queda solo
+  para los casos en que seguir saldría mal.
+
+---
+
+## D16 — Detección de falacias: solo en batch, con listón alto y cita literal
+
+El modelo devuelve, dentro del mismo JSON estructurado del modo batch, una lista `fallacies` por
+bloque con `name`, `quote` y `explanation`. No hay una segunda llamada: el coste extra son los tokens
+de salida de los pocos bloques que tienen alguna.
+
+- **Solo en batch.** El prompt per-block devuelve texto plano y la IA local no razona sobre
+  argumentos. Con esos proveedores no hay emblemas, y la opción lo dice.
+- **Listón alto.** El prompt pide "solo falacias evidentes que un lector atento aceptaría", máximo 3
+  por bloque, y recuerda que la mayoría de los bloques no tienen. Un detector que ve falacias en todo
+  es peor que ninguno. `coerceFallacies` recorta a 3 y acota longitudes por si el modelo se excede.
+- **La cita es literal y sin traducir**, para que el lector la encuentre en el original. El nombre y
+  la explicación van en el idioma del resumen.
+- **Se cachean con el resumen**, y activar o desactivar la detección cambia la huella de la caché:
+  una entrada sin falacias no dice si no las hay o si nadie las buscó.
+- **El esquema estricto exige `fallacies` siempre** (OpenAI `strict` obliga a que todo esté en
+  `required`), así que con la detección desactivada el prompt pide lista vacía.
+- **UI**: un emblema ⚠ por falacia en la cabecera del overlay; hover o foco abre el popover, clic lo
+  fija, Esc o clic fuera lo cierran. El popover es hermano de la caja dentro del Shadow DOM, no hijo,
+  porque la caja recorta con `overflow: hidden` y el popover debe sobresalir del párrafo. Color ámbar,
+  distinto del acento (información) y del error.
+- Se activa por defecto (`detectFallacies: true`). Es la razón de ser de la función y su coste es
+  pequeño; quien no lo quiera lo desactiva en Opciones.
+
+---
+
+## D15 — Mensajería con `sendResponse`, no con promesas devueltas
+
+WXT expone en Chrome el objeto `chrome` tal cual, sin polyfill. Un listener de `runtime.onMessage`
+que devuelve una promesa responde en Firefox, pero en Chrome el emisor recibe `undefined` y la
+extensión parece muerta: el popup nunca sabe si el sitio se activó, el content script nunca recibe el
+resumen. Todos los listeners pasan por `onMessage()` (`lib/messaging.ts`), que acepta manejadores con
+promesas y por debajo llama a `sendResponse` y devuelve `true`, que es lo que entienden los dos
+navegadores. Un manejador que revienta responde con `{ ok: false, error }` en vez de dejar al emisor
+esperando. Seis pruebas simulan el comportamiento estricto de Chrome.
+
+En Chrome el background es un service worker que muere a los 30 s sin actividad; una llamada a un
+proveedor puede superarlo. `keepAliveWhile()` hace una llamada trivial a la API cada 20 s mientras
+haya resúmenes en curso. En Firefox es inocua.
+
+La Summarizer API de Chrome solo admite `en`, `es` y `ja` como idioma de salida; para los demás se
+omite el parámetro y el resumen sale en el idioma del texto. Es una degradación, no un fallo.
+
+---
+
 ## D14 — Internacionalización con `browser.i18n`, sin selector propio de idioma
 
 Se usa el mecanismo estándar de las extensiones: catálogos en `public/_locales/<idioma>/messages.json`

@@ -71,6 +71,12 @@ describe('configFingerprint', () => {
     expect(configFingerprint(DEFAULT_CONFIG, 'gemini-free', 'otro', 'es')).not.toBe(base);
   });
 
+  it('cambia al activar o desactivar la detección de falacias', () => {
+    const on = configFingerprint({ ...DEFAULT_CONFIG, detectFallacies: true }, 'gemini-free', 'm', 'es');
+    const off = configFingerprint({ ...DEFAULT_CONFIG, detectFallacies: false }, 'gemini-free', 'm', 'es');
+    expect(on).not.toBe(off);
+  });
+
   it('es estable si nada relevante cambia', () => {
     const a = configFingerprint(DEFAULT_CONFIG, 'gemini-free', 'm', 'es');
     const b = configFingerprint({ ...DEFAULT_CONFIG, minWords: 250 }, 'gemini-free', 'm', 'es');

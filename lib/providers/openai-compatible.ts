@@ -91,7 +91,7 @@ function makeProvider(options: Options, concurrency: number): SummarizerProvider
 
     async summarizeBatch(req: BatchRequest): Promise<BatchResponse> {
       if (!req.apiKey) throw new ProviderError(t('errMissingKey', options.displayName), 'no-provider', false);
-      const prompt = buildBatchPrompt(req.article, req.blocks, req.format, req.language, req.includeTldr);
+      const prompt = buildBatchPrompt(req.article, req.blocks, req.format, req.language, req.includeTldr, req.detectFallacies);
       const raw = await callChat(options, req.apiKey, req.model, prompt, req.signal, true, 16_000);
       return coerceBatchResponse(parseJsonLoose(raw));
     },

@@ -14,6 +14,7 @@ const els = {
   ratioLabel: $('ratio-label'),
   summaryFormat: $<HTMLSelectElement>('summaryFormat'),
   language: $<HTMLSelectElement>('language'),
+  detectFallacies: $<HTMLInputElement>('detectFallacies'),
   provider: $<HTMLSelectElement>('provider'),
   providerHint: $('provider-hint'),
   fallbackProvider: $<HTMLSelectElement>('fallbackProvider'),
@@ -79,6 +80,7 @@ async function load(): Promise<void> {
   els.cloudConsent.checked = config.cloudConsentGiven;
   els.geminiConsent.checked = config.geminiFreeConsentGiven;
   els.debugLogging.checked = config.debugLogging;
+  els.detectFallacies.checked = config.detectFallacies;
 
   updateRatioLabel();
   renderProviderSelects();
@@ -92,12 +94,20 @@ function updateRatioLabel(): void {
   els.ratioLabel.textContent = t('optRatioValue', els.summaryRatio.value);
 }
 
+function providerOption(status: ProviderStatus): HTMLOptionElement {
+  const option = document.createElement('option');
+  option.value = status.id;
+  option.textContent = status.displayName + (status.available ? '' : t('optUnavailableSuffix'));
+  return option;
+}
+
 function renderProviderSelects(): void {
-  const options = statuses
-    .map((s) => `<option value="${s.id}">${s.displayName}${s.available ? '' : t('optUnavailableSuffix')}</option>`)
-    .join('');
-  els.provider.innerHTML = options;
-  els.fallbackProvider.innerHTML = `<option value="">${t('optNone')}</option>${options}`;
+  // Sin innerHTML: el validador de AMO lo marca aunque el contenido sea nuestro.
+  els.provider.replaceChildren(...statuses.map(providerOption));
+  const none = document.createElement('option');
+  none.value = '';
+  none.textContent = t('optNone');
+  els.fallbackProvider.replaceChildren(none, ...statuses.map(providerOption));
   els.provider.value = config.provider;
   els.fallbackProvider.value = config.fallbackProvider ?? '';
 
@@ -304,6 +314,7 @@ els.summaryFormat.addEventListener('change', () =>
   void save({ summaryFormat: els.summaryFormat.value as Config['summaryFormat'] }),
 );
 els.language.addEventListener('change', () => void save({ language: els.language.value }));
+els.detectFallacies.addEventListener('change', () => void save({ detectFallacies: els.detectFallacies.checked }));
 els.provider.addEventListener('change', async () => {
   await save({ provider: els.provider.value as ProviderId });
   renderProviderSelects();

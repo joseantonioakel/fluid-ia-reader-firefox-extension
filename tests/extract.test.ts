@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { extract, isEligibleBlock } from '../lib/extract/blocks';
+import { DEGRADE, extract, isEligibleBlock, verifyAnchoring } from '../lib/extract/blocks';
 import { findArticleContainer, getLinkDensity, isUnlikelyCandidate } from '../lib/extract/score';
 
 /** Genera un párrafo con el número de palabras pedido y comas realistas. */
@@ -191,6 +191,18 @@ describe('extract', () => {
     expect(result.degradeReason).toBe('too-few-blocks');
   });
 
+  it('con puntuación baja pero bloques y cobertura de sobra, sigue in-place con un aviso', () => {
+    // Sin comas y con párrafos cortos, cada uno puntúa 1 + 0 + 3 = 4: tres bloques suman 12 < 20.
+    const plain = (seed: string) => Array.from({ length: 60 }, (_, i) => `${seed}${i}`).join(' ');
+    setBody(`<div><p>${plain('a')}</p><p>${plain('b')}</p><p>${plain('c')}</p></div>`);
+    const result = extract(document.body, { minWords: 50, skipAnchorCheck: true });
+    expect(result.score).toBeLessThan(20);
+    expect(result.blocks).toHaveLength(3);
+    expect(result.coverage).toBeGreaterThanOrEqual(DEGRADE.minCoverageForLowScore);
+    expect(result.degradeReason).toBeNull();
+    expect(result.warnings).toEqual(['low-score']);
+  });
+
   it('devuelve el texto completo del artículo para usarlo como contexto', () => {
     setBody(`
       <article class="post-content">
@@ -208,5 +220,76 @@ describe('extract', () => {
     const result = extract(document.body, { minWords: 100, skipAnchorCheck: true });
     expect(result.container).toBeNull();
     expect(result.blocks).toHaveLength(0);
+  });
+});
+
+describe('verifyAnchoring · por bloque', () => {
+  interface Box {
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  }
+  /** jsdom no calcula layout: cada elemento declara su caja. */
+  function box(el: Element, b: Box): void {
+    (el as HTMLElement).getBoundingClientRect = () =>
+      ({ ...b, right: b.left + b.width, bottom: b.top + b.height, x: b.left, y: b.top, toJSON: () => b }) as DOMRect;
+  }
+  function article(count: number): HTMLElement[] {
+    setBody(
+      `<article class="post-content">${Array.from(
+        { length: count },
+        (_, i) => `<p id="p${i}">${paragraph(120, `p${i}w`)}</p>`,
+      ).join('')}</article>`,
+    );
+    const ps = Array.from(document.querySelectorAll<HTMLElement>('p'));
+    ps.forEach((p, i) => box(p, { top: i * 100, left: 0, width: 600, height: 80 }));
+    return ps;
+  }
+
+  it('un párrafo con caja 0 (acordeón cerrado, pestaña oculta) se retira y el resto sigue in-place', () => {
+    const ps = article(4);
+    box(ps[2]!, { top: 0, left: 0, width: 0, height: 0 });
+    const result = extract(document.body, { minWords: 100 });
+    expect(result.blocks.map((b) => b.element.id)).toEqual(['p0', 'p1', 'p3']);
+    // Los ids vuelven a ser contiguos tras retirar el inseguro.
+    expect(result.blocks.map((b) => b.id)).toEqual([0, 1, 2]);
+    expect(result.unsafeBlocks).toEqual([{ id: 2, reason: 'invisible', anchor: 'P#p2', words: 120 }]);
+    expect(result.degradeReason).toBeNull();
+    expect(result.warnings).toEqual(['anchor-unsafe']);
+  });
+
+  it('de dos párrafos solapados se retira el segundo', () => {
+    const ps = article(3);
+    box(ps[1]!, { top: 20, left: 0, width: 600, height: 80 }); // pisa a p0
+    const report = verifyAnchoring(extract(document.body, { minWords: 100, skipAnchorCheck: true }).blocks);
+    expect(report.safe.map((b) => b.element.id)).toEqual(['p0', 'p2']);
+    expect(report.unsafe.map((u) => [u.anchor, u.reason])).toEqual([['P#p1', 'overlap']]);
+  });
+
+  it('con más de un tercio de bloques inseguros sí se propone la vista de lectura', () => {
+    const ps = article(3);
+    box(ps[0]!, { top: 0, left: 0, width: 0, height: 0 });
+    box(ps[1]!, { top: 0, left: 0, width: 0, height: 0 });
+    const result = extract(document.body, { minWords: 100 });
+    expect(result.degradeReason).toBe('anchor-unsafe');
+    expect(result.unsafeBlocks).toHaveLength(2);
+  });
+
+  it('un ancestro sticky o fixed ya NO degrada: el overlay se mueve con su párrafo', () => {
+    const ps = article(2);
+    const wrapper = document.querySelector<HTMLElement>('article')!;
+    wrapper.style.position = 'sticky';
+    ps[0]!.style.position = 'fixed';
+    const result = extract(document.body, { minWords: 100 });
+    expect(result.unsafeBlocks).toEqual([]);
+    expect(result.degradeReason).toBeNull();
+    expect(result.warnings).toEqual([]);
+  });
+
+  it('la cobertura mide qué parte del contenedor cubren los bloques', () => {
+    article(2);
+    const result = extract(document.body, { minWords: 100 });
+    expect(result.coverage).toBeCloseTo(1, 1);
   });
 });

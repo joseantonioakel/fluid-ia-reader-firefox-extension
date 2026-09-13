@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ProviderError, coerceBatchResponse, errorFromStatus, parseJsonLoose } from '../lib/providers/types';
+import { ProviderError, coerceBatchResponse, coerceFallacies, errorFromStatus, parseJsonLoose } from '../lib/providers/types';
 
 describe('parseJsonLoose', () => {
   it('acepta JSON limpio', () => {
@@ -25,7 +25,51 @@ describe('parseJsonLoose', () => {
   });
 });
 
+describe('coerceFallacies', () => {
+  it('conserva nombre, cita y explicación recortados', () => {
+    expect(coerceFallacies([{ name: ' Ad hominem ', quote: ' x ', explanation: ' Ataca a la persona. ' }])).toEqual([
+      { name: 'Ad hominem', quote: 'x', explanation: 'Ataca a la persona.' },
+    ]);
+  });
+
+  it('descarta entradas sin nombre o sin explicación; la cita puede faltar', () => {
+    expect(
+      coerceFallacies([
+        { name: 'Sin explicación', quote: 'x' },
+        { quote: 'sin nombre', explanation: 'y' },
+        { name: 'Válida', explanation: 'z' },
+        'texto suelto',
+        null,
+      ]),
+    ).toEqual([{ name: 'Válida', quote: '', explanation: 'z' }]);
+  });
+
+  it('no admite más de tres por bloque y acota la longitud de cada campo', () => {
+    const many = Array.from({ length: 6 }, (_, i) => ({ name: `F${i}`, quote: 'q'.repeat(1000), explanation: 'e' }));
+    const out = coerceFallacies(many);
+    expect(out).toHaveLength(3);
+    expect(out[0]!.quote).toHaveLength(300);
+  });
+
+  it('cualquier cosa que no sea lista da lista vacía', () => {
+    expect(coerceFallacies(undefined)).toEqual([]);
+    expect(coerceFallacies('ad hominem')).toEqual([]);
+  });
+});
+
 describe('coerceBatchResponse', () => {
+  it('adjunta las falacias al resumen solo cuando hay alguna', () => {
+    const result = coerceBatchResponse({
+      tldr: '',
+      summaries: [
+        { id: 0, summary: 'Con falacia.', fallacies: [{ name: 'Hombre de paja', quote: 'q', explanation: 'e' }] },
+        { id: 1, summary: 'Sin falacia.', fallacies: [] },
+      ],
+    });
+    expect(result.summaries[0]!.fallacies).toEqual([{ name: 'Hombre de paja', quote: 'q', explanation: 'e' }]);
+    expect('fallacies' in result.summaries[1]!).toBe(false);
+  });
+
   it('normaliza ids en texto y recorta espacios', () => {
     const result = coerceBatchResponse({
       tldr: '  La tesis.  ',

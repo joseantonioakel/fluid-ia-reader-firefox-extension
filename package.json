@@ -2,9 +2,22 @@
   "name": "lector-fluido",
   "displayName": "Lector Fluido",
   "version": "0.1.0",
+  "description": "Resúmenes con IA superpuestos sobre los párrafos largos de cualquier web.",
+  "license": "MIT",
+  "author": "joseantonioakel",
+  "homepage": "https://github.com/joseantonioakel/fluid-ia-reader-firefox-extension#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joseantonioakel/fluid-ia-reader-firefox-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joseantonioakel/fluid-ia-reader-firefox-extension/issues"
+  },
   "private": true,
   "type": "module",
-  "description": "Resúmenes con IA superpuestos sobre los párrafos largos de cualquier web.",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "wxt --browser firefox",
     "dev:chrome": "wxt --browser chrome",

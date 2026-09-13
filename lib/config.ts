@@ -28,6 +28,7 @@ export const DEFAULT_CONFIG: Config = {
   cacheTtlDays: 30,
   maxCacheMb: 50,
   debugLogging: true,
+  detectFallacies: true,
 };
 
 /** Rangos de validación. Mantener alineado con la página de opciones. */

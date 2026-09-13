@@ -80,7 +80,7 @@ export const anthropicProvider: SummarizerProvider = {
 
   async summarizeBatch(req: BatchRequest): Promise<BatchResponse> {
     if (!req.apiKey) throw new ProviderError(t('errMissingKey', 'Anthropic'), 'no-provider', false);
-    const prompt = buildBatchPrompt(req.article, req.blocks, req.format, req.language, req.includeTldr);
+    const prompt = buildBatchPrompt(req.article, req.blocks, req.format, req.language, req.includeTldr, req.detectFallacies);
     // Anthropic no tiene response_format: la salida estructurada se fuerza con tool_choice.
     const content = await callAnthropic(req.apiKey, req.model, prompt, req.signal, 16_000, {
       name: 'devolver_resumenes',
