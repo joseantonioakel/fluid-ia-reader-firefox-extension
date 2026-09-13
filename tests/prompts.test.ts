@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { FALLACY_KINDS } from '../lib/fallacies';
 import { GEMINI_RESPONSE_SCHEMA, JSON_SCHEMA, buildBatchPrompt } from '../lib/pipeline/prompts';
 import type { ArticlePayload } from '../lib/types';
 
@@ -19,6 +20,8 @@ describe('buildBatchPrompt y falacias', () => {
     expect(prompt).toContain('máximo 3 por bloque');
     // El nombre y la explicación van en el idioma del resumen.
     expect(prompt).toContain('nombre de la falacia en español');
+    // Los tipos canónicos se listan tal cual, para que el modelo los copie.
+    for (const kind of FALLACY_KINDS) expect(prompt).toContain(`  ${kind}: `);
   });
 
   it('con detección desactivada pide la lista vacía, para que el esquema estricto siga cumpliéndose', () => {
@@ -35,9 +38,17 @@ describe('buildBatchPrompt y falacias', () => {
   it('los esquemas estructurados exigen la lista de falacias en cada resumen', () => {
     expect(JSON_SCHEMA.properties.summaries.items.required).toContain('fallacies');
     expect(JSON_SCHEMA.properties.summaries.items.properties.fallacies.items.required).toEqual([
+      'kind',
       'name',
       'quote',
       'explanation',
+    ]);
+    // El tipo es una enumeración cerrada en ambos esquemas.
+    expect(JSON_SCHEMA.properties.summaries.items.properties.fallacies.items.properties.kind.enum).toEqual([
+      ...FALLACY_KINDS,
+    ]);
+    expect(GEMINI_RESPONSE_SCHEMA.properties.summaries.items.properties.fallacies.items.properties.kind.enum).toEqual([
+      ...FALLACY_KINDS,
     ]);
     expect(GEMINI_RESPONSE_SCHEMA.properties.summaries.items.required).toContain('fallacies');
   });

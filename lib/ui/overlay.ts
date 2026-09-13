@@ -1,3 +1,4 @@
+import { fallacyIcon } from '../fallacies';
 import { t } from '../i18n';
 import type { Fallacy } from '../types';
 import { contrastingStack } from './fonts';
@@ -475,7 +476,9 @@ export class BlockOverlay {
     const btn = document.createElement('button') as HTMLButtonElement & { fallacy: Fallacy };
     btn.className = 'badge';
     btn.type = 'button';
-    btn.textContent = '⚠';
+    // Un icono por tipo de falacia: se distinguen sin abrir el popover.
+    btn.textContent = fallacyIcon(fallacy.kind);
+    btn.dataset.kind = fallacy.kind;
     btn.title = fallacy.name;
     btn.setAttribute('aria-label', t('fallacyBadgeLabel', fallacy.name));
     btn.setAttribute('aria-expanded', 'false');
@@ -514,7 +517,7 @@ export class BlockOverlay {
     kind.className = 'kind';
     kind.textContent = t('fallacyTitle');
     const name = document.createElement('span');
-    name.textContent = `⚠ ${fallacy.name}`;
+    name.textContent = `${fallacyIcon(fallacy.kind)} ${fallacy.name}`;
     const close = document.createElement('button');
     close.type = 'button';
     close.textContent = '✕';

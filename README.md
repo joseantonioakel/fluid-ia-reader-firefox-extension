@@ -29,7 +29,7 @@ npm run build        # .output/firefox-mv3
 npm run build:chrome # .output/chrome-mv3
 npm run build:all
 
-npm test             # 162 pruebas
+npm test             # 165 pruebas
 npm run compile      # typecheck sin emitir
 ```
 
@@ -231,14 +231,14 @@ lib/
   pipeline/            estrategias batch/per-block, prompts, planificador
   ui/                  overlay, botón flotante, avisos, tema
   cache.ts config.ts origins.ts oauth.ts words.ts types.ts
-tests/                 162 pruebas, incluida la comparación contra Readability
+tests/                 165 pruebas, incluida la comparación contra Readability
 ```
 
 ---
 
 ## Estado
 
-Implementado y verificado: builds de Firefox y Chrome, typecheck limpio y 162 pruebas en verde.
+Implementado y verificado: builds de Firefox y Chrome, typecheck limpio y 165 pruebas en verde.
 
 Pendiente de validación **con tráfico real**, que exige credenciales y navegador:
 

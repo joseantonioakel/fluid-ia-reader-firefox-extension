@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { BASE_SCALE, BlockOverlay, lineHeightRatio, overlayPadding } from '../lib/ui/overlay';
+import type { Fallacy } from '../lib/types';
 import type { Theme } from '../lib/ui/theme';
 
 const theme: Theme = {
@@ -104,7 +105,8 @@ describe('BlockOverlay', () => {
 });
 
 describe('BlockOverlay · falacias', () => {
-  const fallacy = {
+  const fallacy: Fallacy = {
+    kind: 'false-dilemma',
     name: 'Falso dilema',
     quote: 'O estás con nosotros o contra nosotros.',
     explanation: 'Presenta solo dos opciones cuando existen más.',
@@ -130,11 +132,30 @@ describe('BlockOverlay · falacias', () => {
   }
 
   it('pinta un emblema por falacia, con el nombre accesible', () => {
-    overlayWith([fallacy, { ...fallacy, name: 'Ad hominem' }]);
+    overlayWith([fallacy, { ...fallacy, kind: 'ad-hominem', name: 'Ad hominem' }]);
     const badges = shadow.querySelectorAll('.badge');
     expect(badges).toHaveLength(2);
     expect(badges[0]!.getAttribute('aria-label')).toBe('Falacia lógica: Falso dilema');
     expect(badges[1]!.getAttribute('title')).toBe('Ad hominem');
+  });
+
+  it('cada tipo de falacia lleva su propio icono; el tipo desconocido lleva el genérico', () => {
+    overlayWith([
+      fallacy,
+      { ...fallacy, kind: 'ad-hominem' },
+      { ...fallacy, kind: 'red-herring' },
+      { ...fallacy, kind: 'other' },
+    ]);
+    const icons = Array.from(shadow.querySelectorAll('.badge'), (b) => b.textContent);
+    expect(icons).toEqual(['⚖️', '👤', '🐟', '⚠']);
+    expect(new Set(icons).size).toBe(4);
+    expect(shadow.querySelectorAll('.badge')[2]!.getAttribute('data-kind')).toBe('red-herring');
+  });
+
+  it('el popover repite el icono del tipo junto al nombre', () => {
+    overlayWith([{ ...fallacy, kind: 'slippery-slope', name: 'Pendiente resbaladiza' }]);
+    shadow.querySelector('.badge')!.dispatchEvent(new Event('mouseenter'));
+    expect(shadow.querySelector('.pop h4')!.textContent).toContain('🎿 Pendiente resbaladiza');
   });
 
   it('sin falacias no hay emblemas', () => {

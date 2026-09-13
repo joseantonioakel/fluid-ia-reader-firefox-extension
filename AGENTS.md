@@ -17,7 +17,7 @@ The project documentation is written in Spanish.
 ```bash
 npm run build        # Firefox (default)
 npm run build:chrome
-npm test             # 162 tests
+npm test             # 165 tests
 npm run compile      # wxt prepare + tsc --noEmit
 ```
 

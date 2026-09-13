@@ -1,3 +1,4 @@
+import { coerceFallacyKind } from '../fallacies';
 import { t } from '../i18n';
 import { createLogger } from '../log';
 import type { ArticlePayload, BlockPayload, BlockSummary, ErrorCode, Fallacy, ProviderId, SummaryFormat } from '../types';
@@ -181,7 +182,7 @@ export function coerceFallacies(raw: unknown): Fallacy[] {
     const explanation = field('explanation');
     // Sin nombre o sin explicación no hay nada que mostrar; la cita puede faltar.
     if (!name || !explanation) continue;
-    out.push({ name, quote: field('quote'), explanation });
+    out.push({ kind: coerceFallacyKind(e.kind), name, quote: field('quote'), explanation });
     if (out.length >= MAX_FALLACIES) break;
   }
   return out;

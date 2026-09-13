@@ -249,6 +249,12 @@ de salida de los pocos bloques que tienen alguna.
   es peor que ninguno. `coerceFallacies` recorta a 3 y acota longitudes por si el modelo se excede.
 - **La cita es literal y sin traducir**, para que el lector la encuentre en el original. El nombre y
   la explicación van en el idioma del resumen.
+- **Tipo canónico además del nombre.** El modelo elige un `kind` de una lista cerrada de 16 tipos
+  (`lib/fallacies.ts`) o `other`; el esquema lo impone como enumeración y `coerceFallacyKind` manda a
+  `other` cualquier cosa fuera de la lista. El nombre es para leer; el tipo decide el **icono del
+  emblema**, distinto por falacia (👤 ad hominem, 🌾 hombre de paja, ⚖️ falso dilema, 🐟 pista
+  falsa…), de modo que se distinguen sin abrir el popover. Las descripciones de cada tipo van en el
+  prompt para que el modelo las use con el mismo criterio.
 - **Se cachean con el resumen**, y activar o desactivar la detección cambia la huella de la caché:
   una entrada sin falacias no dice si no las hay o si nadie las buscó.
 - **El esquema estricto exige `fallacies` siempre** (OpenAI `strict` obliga a que todo esté en

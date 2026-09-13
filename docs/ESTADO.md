@@ -20,7 +20,7 @@ un navegador ni ha hecho una sola llamada real a un proveedor de IA**.
 | | |
 |---|---|
 | Código | ~5.150 líneas de TypeScript en `lib/` y `entrypoints/` |
-| Pruebas | 162, en 14 ficheros, todas en verde |
+| Pruebas | 165, en 14 ficheros, todas en verde |
 | Typecheck | `tsc --noEmit` limpio, modo `strict` |
 | Builds | Firefox MV3 y Chrome MV3 correctos, ~107 kB |
 | Ejecución real | **Sin verificar** |
@@ -174,6 +174,7 @@ Quedan aquí porque son fallos de los que no protege el compilador y conviene no
 | 2026-08-10 | Logging y diagnóstico. Se encuentra y corrige el bug del `tabId`. 68 pruebas |
 | 2026-08-10 | Fondo con 10 % de celeste, tipografía contraria, fusión de párrafos cortos. 97 pruebas |
 | 2026-08-12 | Documentación de continuidad (este documento, `DECISIONES.md`, PRD v1.3) |
+| 2026-09-13 | Icono distinto por tipo de falacia: lista cerrada de 16 tipos + `other` en el esquema (`kind`), catálogo en `lib/fallacies.ts`. 165 pruebas |
 | 2026-09-13 | Degradación al Modo B por evidencia (D17): anclaje por bloque, sin regla sticky/fixed, umbrales por cobertura, informe de bloques inseguros en log y diagnóstico, aviso no bloqueante. 162 pruebas |
 | 2026-09-13 | Detección de falacias lógicas por bloque (D16): el modelo las devuelve en el JSON batch, se cachean, y el overlay muestra emblemas ⚠ con popover (nombre, cita literal, por qué). Opción para desactivarla. 156 pruebas |
 | 2026-09-12 | Compatibilidad real con Chrome/Chromium: listeners de mensajes vía `sendResponse` (antes devolvían promesas, que Chrome ignora), keepalive del service worker, idioma de salida acotado en la Summarizer API. 138 pruebas |

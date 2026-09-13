@@ -26,10 +26,19 @@ describe('parseJsonLoose', () => {
 });
 
 describe('coerceFallacies', () => {
-  it('conserva nombre, cita y explicación recortados', () => {
-    expect(coerceFallacies([{ name: ' Ad hominem ', quote: ' x ', explanation: ' Ataca a la persona. ' }])).toEqual([
-      { name: 'Ad hominem', quote: 'x', explanation: 'Ataca a la persona.' },
+  it('conserva tipo, nombre, cita y explicación recortados', () => {
+    expect(
+      coerceFallacies([{ kind: 'ad-hominem', name: ' Ad hominem ', quote: ' x ', explanation: ' Ataca a la persona. ' }]),
+    ).toEqual([{ kind: 'ad-hominem', name: 'Ad hominem', quote: 'x', explanation: 'Ataca a la persona.' }]);
+  });
+
+  it('normaliza el tipo y manda a "other" lo que no esté en la lista cerrada', () => {
+    const out = coerceFallacies([
+      { kind: 'Straw Man', name: 'a', explanation: 'e' },
+      { kind: 'falacia_inventada', name: 'b', explanation: 'e' },
+      { name: 'sin tipo', explanation: 'e' },
     ]);
+    expect(out.map((f) => f.kind)).toEqual(['straw-man', 'other', 'other']);
   });
 
   it('descarta entradas sin nombre o sin explicación; la cita puede faltar', () => {
@@ -41,7 +50,7 @@ describe('coerceFallacies', () => {
         'texto suelto',
         null,
       ]),
-    ).toEqual([{ name: 'Válida', quote: '', explanation: 'z' }]);
+    ).toEqual([{ kind: 'other', name: 'Válida', quote: '', explanation: 'z' }]);
   });
 
   it('no admite más de tres por bloque y acota la longitud de cada campo', () => {
@@ -62,11 +71,17 @@ describe('coerceBatchResponse', () => {
     const result = coerceBatchResponse({
       tldr: '',
       summaries: [
-        { id: 0, summary: 'Con falacia.', fallacies: [{ name: 'Hombre de paja', quote: 'q', explanation: 'e' }] },
+        {
+          id: 0,
+          summary: 'Con falacia.',
+          fallacies: [{ kind: 'straw-man', name: 'Hombre de paja', quote: 'q', explanation: 'e' }],
+        },
         { id: 1, summary: 'Sin falacia.', fallacies: [] },
       ],
     });
-    expect(result.summaries[0]!.fallacies).toEqual([{ name: 'Hombre de paja', quote: 'q', explanation: 'e' }]);
+    expect(result.summaries[0]!.fallacies).toEqual([
+      { kind: 'straw-man', name: 'Hombre de paja', quote: 'q', explanation: 'e' },
+    ]);
     expect('fallacies' in result.summaries[1]!).toBe(false);
   });
 

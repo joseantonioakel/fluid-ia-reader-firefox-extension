@@ -1,4 +1,5 @@
 /** Tipos compartidos entre content script, background y páginas de la extensión. */
+import type { FallacyKind } from './fallacies';
 
 export type ProviderId =
   | 'browser-builtin'
@@ -66,6 +67,8 @@ export interface ArticlePayload {
 
 /** Falacia lógica detectada en el texto ORIGINAL de un bloque. */
 export interface Fallacy {
+  /** Tipo canónico, de la lista cerrada de `lib/fallacies.ts`; decide el icono. */
+  kind: FallacyKind;
   /** Nombre de la falacia, en el idioma del resumen. */
   name: string;
   /** Fragmento literal del bloque donde se incurre en ella. */
